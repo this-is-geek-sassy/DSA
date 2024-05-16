@@ -7,6 +7,8 @@ public class MoneyDouble {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+//        System.out.println(Origin.isSingleDigit(1));
+
         int t = scanner.nextInt();
         while (t-- != 0) {
             int x, y;
