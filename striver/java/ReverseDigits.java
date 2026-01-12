@@ -9,6 +9,14 @@ public class ReverseDigits {
         Scanner s = new Scanner(System.in);
 
         String n = s.nextLine();
+
+        // minus case handling:
+        boolean isMinus = false;
+        if (n.charAt(0) == '-') {
+            isMinus = true;
+            n = n.substring(1);
+        }
+
         ArrayDeque<Character> a = new ArrayDeque<>();
         
         for (int i=0; i<n.length(); i++) {
@@ -19,7 +27,11 @@ public class ReverseDigits {
         for (int i=0; i<n.length(); i++) {
             r += a.pop();
         }
-        System.out.println(r);
+        if (isMinus)
+            r = "-" + r;
+        
+        long k = Long.parseLong(r);
+        System.out.println(k);
         s.close();
     }
 }
