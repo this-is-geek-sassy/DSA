@@ -1,4 +1,5 @@
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -21,26 +22,29 @@ public class GCDOfArray {
 
     public static int findGCDOfArray(int[] a) {
 
-        int s = a[0], l = a[0], s_i, l_i;
-        for (int i = 1; i < a.length; i++) {
-            if (i+1 >= a.length) {
-                s_i = a[i];   l_i = a[i];
-            }
-            else {
-                if (a[i] < a[i+1]) {
-                    s_i = a[i];   l_i = a[i+1];
-                }
+        int s, l, s_i, l_i;
+        // for (int i = 1; i < a.length; i++) {
+        //     if (i+1 >= a.length) {
+        //         s_i = a[i];   l_i = a[i];
+        //     }
+        //     else {
+        //         if (a[i] < a[i+1]) {
+        //             s_i = a[i];   l_i = a[i+1];
+        //         }
             
-                else {
-                    s_i = a[i+1];    l_i = a[i];
-                }
-            }
-            if (s_i < s)
-                s = s_i;
-            if (l_i > l)
-                l = l_i;
-        }
-        
+        //         else {
+        //             s_i = a[i+1];    l_i = a[i];
+        //         }
+        //     }
+        //     if (s_i < s)
+        //         s = s_i;
+        //     if (l_i > l)
+        //         l = l_i;
+        // }
+
+        Arrays.sort(a);
+        s = a[0]; 
+        l = a[a.length-1];
         return gcd(l, s);
     }
     
