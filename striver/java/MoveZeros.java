@@ -6,6 +6,41 @@ import java.util.Scanner;
 // link: https://leetcode.com/problems/move-zeroes/description/
 
 public class MoveZeros {
+
+    public static void moveZeroesOneLoop(int[] nums) {
+        int j = 0; // next position for a non-zero element
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != 0) {
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+                j++;
+            }
+        }
+    }
+
+    public static void moveZeroes2 (int[] nums) {
+        int zeros = 0, number_marker = -1;
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0) {
+                zeros++;
+            }
+            else if (i != number_marker) {
+                nums[++number_marker] = nums[i];
+            }
+        }
+        for (int i = nums.length-1; zeros != 0; i--) {
+            nums[i] = 0;
+            --zeros;
+        }
+        // System.out.println("Array: ");
+        // for (Integer elem : nums) {
+        //     System.out.print(elem + " ");
+        // }
+        // System.out.println("\nZeros: " + zeros);
+    }
     
     public static void moveZeroes(int[] nums) {
 
@@ -52,6 +87,6 @@ public class MoveZeros {
             nums[i] = Integer.parseInt(elem);
             i++;
         }
-        moveZeroes(nums);
+        moveZeroes2(nums);
     }
 }
