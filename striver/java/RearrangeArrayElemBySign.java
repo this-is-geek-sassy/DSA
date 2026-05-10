@@ -49,6 +49,24 @@ public class RearrangeArrayElemBySign {
 
         return newNums;
     }
+    
+    public static int[] rearrangeArray2(int[] nums) {
+        int[] ans = new int[nums.length];
+        int pos = 0, neg = 1;
+
+        for (int i=0; i<nums.length; i++) {
+
+            if (nums[i] >= 0) {
+                ans[pos] = nums[i];
+                pos += 2;
+            } else {
+                ans[neg] = nums[i];
+                neg += 2;
+            }
+        }
+        return ans;
+    }
+    
     public static void main(String[] args) {
         
         Scanner sc = new Scanner(System.in);
@@ -63,7 +81,7 @@ public class RearrangeArrayElemBySign {
             nums[i++] = Integer.parseInt(elem);
         }
 
-        nums = rearrangeArray(nums);
+        nums = rearrangeArray2(nums);
         for (int e : nums) {
             System.out.print(e + " ");
         }
