@@ -16,7 +16,7 @@ public class LongestConsecutiveSequence {
         for (int num : nums) {
             store.put(num, store.getOrDefault(num, 0)+1);
         }
-        System.out.println(store);
+        // System.out.println(store);
 
         Integer old_key = store.firstKey();
         int indicator = 0;
