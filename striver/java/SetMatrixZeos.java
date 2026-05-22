@@ -1,10 +1,36 @@
 
 // link: https://leetcode.com/problems/set-matrix-zeroes/description/
 
-import java.io.Console;
 import java.util.*;
 
 public class SetMatrixZeos {
+
+    public static void setZeroes2(int[][] matrix) {
+
+        boolean zerosInFirstCol = false;
+
+        for (int row=0; row < matrix.length; row++) {
+            if (matrix[row][0] == 0)
+                zerosInFirstCol = true;
+            for (int col=1; col < matrix[0].length; col++) {
+                if (matrix[row][col] == 0) {
+                    matrix[row][0] = 0;
+                    matrix[0][col] = 0;
+                }
+            }
+        }
+        for (int row=matrix.length-1; row >= 0; row--) {
+            for (int col=matrix[0].length-1; col >= 1; col--) {
+                if (matrix[row][0] == 0 || matrix[0][col] == 0) {
+                    matrix[row][col] = 0;
+                }
+            }
+            if (zerosInFirstCol) {
+                matrix[row][0] = 0;
+            }
+        }
+    }
+
     public static void setZeroes(int[][] matrix) {
 
         ArrayList<Integer> al = new ArrayList<>();
@@ -42,7 +68,7 @@ public class SetMatrixZeos {
                 hst.add(al.get(h));
             }
         }
-        System.out.print("positions: ");
+        // System.out.print("positions: ");
         for (Integer e : al) {
             System.out.print(e + " ");
         }
@@ -97,16 +123,21 @@ public class SetMatrixZeos {
         //     }
         //     System.out.println();
         // }
-        
+        long start = System.nanoTime();
         setZeroes(matrix);
-        for (int i = 0; i < matrix.length; i++) {
-            for (int k = 0; k < matrix[i].length; k++) {
+        long end = System.nanoTime();
+        System.out.println("Time expended in setZeros: " + (end - start) +" NS.");
+        // for (int i = 0; i < matrix.length; i++) {
+        //     for (int k = 0; k < matrix[i].length; k++) {
 
-                System.out.print(matrix[i][k] + " ");
-            }
-            System.out.println();
-        }
-        
+        //         System.out.print(matrix[i][k] + " ");
+        //     }
+        //     System.out.println();
+        // }
+        start = System.nanoTime();
+        setZeroes2(matrix);
+        end = System.nanoTime();
+        System.out.println("Time expended in setZeros2: " + (end - start) + " NS");
         sc.close();
     }
 }
