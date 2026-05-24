@@ -5,6 +5,48 @@ public class SpiralMatrix {
     record Pair<T, U>(T first, U second) {
 
     }
+    public static List<Integer> spiralOrder2 (int[][] matrix) {
+        List<Integer> li = new ArrayList<>();
+        int n = matrix.length;
+        int m = matrix[0].length;
+        int top = 0, bottom = n-1, right = m-1, left = 0;
+
+        while (top <= bottom && left <= right) {
+
+            // left -> right
+            for (int j=left; j <=right; j++) {
+                li.add(matrix[top][j]);
+            }
+            top++;
+            if (top > bottom || left > right)
+                break;
+
+            // top->bottom
+            for (int j=top; j <= bottom; j++) {
+                li.add(matrix[j][right]);
+            }
+            right--;
+            if (top > bottom || left > right)
+                break;
+            
+            // right -> left
+            for (int j=right; j >= left; j--) {
+                li.add(matrix[bottom][j]);
+            }
+            bottom--;
+            if (top > bottom || left > right)
+                break;
+            
+            // bottom -> top
+            for (int j=bottom; j >= top; j--) {
+                li.add(matrix[j][left]);
+            }
+            left++;
+            // break;
+        }
+
+        return li;
+    }
     public static List<Integer> spiralOrder(int[][] matrix) {
         List<Integer> li = new ArrayList<>();
 
@@ -32,9 +74,9 @@ public class SpiralMatrix {
             }
             j--;
             i++;
-            if (set.contains(new Pair<>(i,j))) {
-                break;
-            }
+            // if (set.contains(new Pair<>(i,j))) {
+            //     break;
+            // }
             for (; i < n; i++) {
                 if (set.contains(new Pair<>(i,j))) {
                     break;
@@ -45,9 +87,9 @@ public class SpiralMatrix {
             }
             i--;
             j--;
-            if (set.contains(new Pair<>(i,j))) {
-                break;
-            }
+            // if (set.contains(new Pair<>(i,j))) {
+            //     break;
+            // }
             for (; j >= 0; j--) {
                 if (set.contains(new Pair<>(i,j))) {
                     break;
@@ -58,9 +100,9 @@ public class SpiralMatrix {
             }
             j++;
             i--;
-            if (set.contains(new Pair<>(i,j))) {
-                break;
-            }
+            // if (set.contains(new Pair<>(i,j))) {
+            //     break;
+            // }
             for (; i > 0; i--) {
                 if (set.contains(new Pair<>(i,j))) {
                     break;
@@ -132,7 +174,7 @@ public class SpiralMatrix {
             System.out.println();
         }
         long start = System.nanoTime();
-        List<Integer> li = spiralOrder(matrix);
+        List<Integer> li = spiralOrder2(matrix);
         long end = System.nanoTime();
         System.out.println("\nTime expended in setZeros: " + (end - start) +" NS.");
         // for (int i = 0; i < matrix.length; i++) {
