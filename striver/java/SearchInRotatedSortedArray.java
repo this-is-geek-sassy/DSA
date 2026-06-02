@@ -1,11 +1,12 @@
 
 // main: https://leetcode.com/problems/search-in-rotated-sorted-array/
+// link: https://leetcode.com/problems/search-in-rotated-sorted-array-ii/
 
 import java.util.*;
 
 public class SearchInRotatedSortedArray {
 
-    public static int normalBinSearch(int[] nums, int target) {
+    public static boolean normalBinSearch(int[] nums, int target) {
 
         int low = 0, high = nums.length - 1;
 
@@ -13,58 +14,54 @@ public class SearchInRotatedSortedArray {
             int mid = (low + high) / 2;
 
             if (target == nums[mid]) {
-                return mid;
+                return true;
             } else if (target >= nums[mid]) {
                 low = mid +1;
             } else {
                 high = mid - 1;
             }
         }
-        return -1;
+        return false;
     }
-    public static int normalLinearSearch(int[] nums, int target) {
+    public static boolean normalLinearSearch(int[] nums, int target) {
 
         for (int i=0; i < nums.length; i++) {
             if (nums[i] == target) {
-                return i;
+                return true;
             }
         }
-        return -1;
+        return false;
     }
     public static int positiveModulo (int a, int m) {
 
         return ((a % m) + m) % m;
     }
-    public static int search(int[] nums, int target) {
+    public static boolean search(int[] nums, int target) {
         
-        int low = 0, high = nums.length - 1;
-        int mid = (low + high) / 2;
-
-        if (nums[low] < nums[high]) {
-            // unroated, normal bin search
-            return normalBinSearch(nums, target);
+        int low = 0, high = nums.length - 1; 
+        int mid = (low + high) / 2; 
+        if (nums[low] < nums[high]) { 
+            // unroated, normal bin search 
+            return normalBinSearch(nums, target); 
         } 
-        // suspecious case, could be rotated or unrotated
-        if (nums[low] == nums[mid] && nums[mid] == nums[high]) {
-            // frustrated case, just fo liear search
-            return normalLinearSearch(nums, target);
-        }
+        // suspecious case, could be rotated or unrotated 
+        if (nums[low] == nums[mid] && nums[mid] == nums[high]) { 
+            // frustrated case, just do liear search 
+            return normalLinearSearch(nums, target); 
+        } 
         // definitely roatated at this point]
-        int k_cand = 0;
-        while (low <= high) {
-            if (nums[low] < nums[k_cand])
-                k_cand = low;
-            mid = (low + high) / 2;
+        while (low < high) {
+            mid = low + (high - low) / 2;
 
-            if (nums[mid] >= nums[low]) {
+            if (nums[mid] > nums[high]) {
                 low = mid + 1;
             } else {
-                if (nums[mid] < nums[k_cand])
-                    k_cand = mid;
-                high = mid - 1;
+                high = mid;
             }
         }
-        int pivot = nums.length - k_cand;
+
+        int pivot = low;
+        // int pivot = nums.length - k_cand;
         System.out.println("pivot: " + pivot);
         int n = nums.length;
         low = 0;
@@ -76,7 +73,7 @@ public class SearchInRotatedSortedArray {
             int realMid = (mid + pivot) % n;
 
             if (nums[realMid] == target)
-                return realMid;
+                return true;
 
             if (nums[realMid] < target)
                 low = mid + 1;
@@ -84,7 +81,7 @@ public class SearchInRotatedSortedArray {
                 high = mid - 1;
         }
 
-        return -1;
+        return false;
     }
     public static int search2 (int[] nums, int target) {
 
@@ -126,7 +123,7 @@ public class SearchInRotatedSortedArray {
             nums[i] = Integer.parseInt(inp_arr[i]);
         }
         int target = sc.nextInt();
-        int ans = search2(nums, target);
+        boolean ans = search(nums, target);
         System.out.println(ans);
         sc.close();
     }
