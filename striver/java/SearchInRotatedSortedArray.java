@@ -83,6 +83,39 @@ public class SearchInRotatedSortedArray {
 
         return false;
     }
+    public static boolean search3 (int[] nums, int target) {
+
+        int n = nums.length, low = 0, high = n - 1;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (nums[mid] == target) {
+                return true;
+            }
+            if (nums[low] == nums[mid] && nums[mid] == nums[high]) {
+                low++;
+                high--;
+                // continue;
+            }
+            else if (nums[low] <= nums[mid]) {
+                // left half is sorted
+                if (nums[low] <= target && target < nums[mid]) {
+                    high = mid - 1;
+                }
+                else {
+                    low = mid + 1;
+                }
+            } else {
+                // right half is sorted
+                if (nums[high] >= target && nums[mid] < target) {
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+        }
+        return false;
+    }
     public static int search2 (int[] nums, int target) {
 
         int n = nums.length, low = 0, high = n - 1;
@@ -123,7 +156,7 @@ public class SearchInRotatedSortedArray {
             nums[i] = Integer.parseInt(inp_arr[i]);
         }
         int target = sc.nextInt();
-        boolean ans = search(nums, target);
+        boolean ans = search3(nums, target);
         System.out.println(ans);
         sc.close();
     }
