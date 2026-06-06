@@ -1,5 +1,6 @@
 
 // link: https://takeuforward.org/data-structure/merge-two-sorted-arrays-without-extra-space
+// https://www.geeksforgeeks.org/problems/merge-two-sorted-arrays-1587115620/1
 
 import java.util.Scanner;
 
