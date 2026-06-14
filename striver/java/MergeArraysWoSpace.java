@@ -2,9 +2,91 @@
 // link: https://takeuforward.org/data-structure/merge-two-sorted-arrays-without-extra-space
 // https://www.geeksforgeeks.org/problems/merge-two-sorted-arrays-1587115620/1
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class MergeArraysWoSpace {
+
+    private int nextGap(int gap) {
+        if (gap <= 1)
+            return 0;
+        return (gap / 2) + (gap % 2); // ceil(gap/2)
+    }
+
+    public void mergeArraysShellMethod(int a[], int b[]) {
+        // https://www.geeksforgeeks.org/problems/merge-two-sorted-arrays-1587115620/1
+        // code here
+        int n = a.length;
+        int m = b.length;
+
+        int gap = nextGap(n + m);
+
+        while (gap > 0) {
+
+            int left = 0;
+            int right = left + gap;
+
+            while (right < n + m) {
+
+                // Both pointers in first array
+                if (left < n && right < n) {
+
+                    if (a[left] > a[right]) {
+                        int temp = a[left];
+                        a[left] = a[right];
+                        a[right] = temp;
+                    }
+                }
+
+                // Left in a[], right in b[]
+                else if (left < n && right >= n) {
+
+                    if (a[left] > b[right - n]) {
+                        int temp = a[left];
+                        a[left] = b[right - n];
+                        b[right - n] = temp;
+                    }
+                }
+
+                // Both pointers in b[]
+                else {
+
+                    if (b[left - n] > b[right - n]) {
+                        int temp = b[left - n];
+                        b[left - n] = b[right - n];
+                        b[right - n] = temp;
+                    }
+                }
+
+                left++;
+                right++;
+            }
+
+            gap = nextGap(gap);
+        }
+    }
+
+    public void mergeArraysCheatingMthod(int arr1[], int arr2[]) {
+        // code here
+
+        // https://www.geeksforgeeks.org/problems/merge-two-sorted-arrays-1587115620/1
+        int n = arr1.length, m = arr2.length;
+        int i =0, j =0, k = n-1;
+        while(i <= k && j<m){
+            if(arr1[i] < arr2[j]){
+                i++;
+            }
+            else{
+                int temp = arr2[j];
+                arr2[j] = arr1[k];
+                arr1[k] = temp;
+                j++;
+                k--;
+            }
+        }
+        Arrays.sort(arr1);
+        Arrays.sort(arr2);
+        }
 
     public static void merge (int[] nums1, int[] nums2) {
         
