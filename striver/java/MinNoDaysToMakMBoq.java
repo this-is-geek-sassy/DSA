@@ -16,6 +16,8 @@ public class MinNoDaysToMakMBoq {
 
                 if (flowers == k) {
                     bouquets++;
+                    if (bouquets >= m)
+                        return true;
                     flowers = 0;
                 }
 
@@ -72,8 +74,10 @@ public class MinNoDaysToMakMBoq {
         int low = Integer.MAX_VALUE, high = Integer.MIN_VALUE, cand_mid = low;
 
         for (int day : bloomDay) {
-            low = Math.min(low, day);
-            high = Math.max(high, day);
+            // low = Math.min(low, day);
+            // high = Math.max(high, day);
+            if (day < low) low = day;
+            if (day > high) high = day;
         }
         int mid = -1;
         while (low <= high) {
