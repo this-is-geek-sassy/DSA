@@ -4,7 +4,31 @@
 import java.util.Scanner;
 
 public class MinNoDaysToMakMBoq {
+    public static boolean canIgetMBoqOptimn1 (int[] bloomDay, int m, int k, int mid) {
+        int flowers = 0;
+        int bouquets = 0;
 
+        for (int day : bloomDay) {
+
+            if (day <= mid) {
+
+                flowers++;
+
+                if (flowers == k) {
+                    bouquets++;
+                    flowers = 0;
+                }
+
+            } else {
+
+                flowers = 0;
+
+            }
+
+        }
+
+        return bouquets >= m;
+    }
     public static boolean canIgetMBoq (int[] bloomDay, int m, int k, int mid) {
         // do not modify this method body
         int count = 0, i, j=0;
@@ -60,7 +84,7 @@ public class MinNoDaysToMakMBoq {
             //     DebugLogger.Arg.of("mid", mid),
             //     DebugLogger.Arg.of("cand_mid", cand_mid)
             // );
-            if (canIgetMBoq(bloomDay, m, k, mid)) {
+            if (canIgetMBoqOptimn1(bloomDay, m, k, mid)) {
                 cand_mid = mid;
                 high = mid - 1;
             } else {
