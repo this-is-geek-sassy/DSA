@@ -54,9 +54,9 @@ public class Search2DMatrix2 {
             if (matrix[cmid][rmid] == target)
                 return true;
             else if (target < matrix[cmid][rmid]) {
-                return searchMatrixRec(matrix, rlow, rhigh, clow, cmid, target) || searchMatrixRec(matrix, rlow, rmid, clow, chigh, target);
+                return searchMatrixRec(matrix, rlow, rmid-1, clow, cmid-1, target) || searchMatrixRec(matrix, rlow, rmid-1, cmid, chigh, target) || searchMatrixRec(matrix, rmid, rhigh, clow, cmid-1, target);
             } else {
-                return searchMatrixRec(matrix, rmid, rhigh, clow, chigh, target) || searchMatrixRec(matrix, rlow, rhigh, cmid, chigh, target);
+                return searchMatrixRec(matrix, rlow, rmid-1, cmid, chigh, target) || searchMatrixRec(matrix, rmid, rhigh, clow, cmid-1, target) || searchMatrixRec(matrix, rmid, rhigh, cmid, chigh, target);
             }
         }
         return false;
