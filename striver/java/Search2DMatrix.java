@@ -114,5 +114,6 @@ public class Search2DMatrix {
         //     }
         //     System.out.println();
         // }
+        sc.close();
     }
 }
