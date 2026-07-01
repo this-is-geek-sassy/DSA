@@ -29,6 +29,7 @@ public class Search2DMatrix2 {
 
         return matrix;
     }
+    
     public static boolean thoroughSearch (int[][] matrix, int rlow, int rhigh, int clow, int chigh, int target) {
         int i, j=-1;
         for (i = clow; i <= chigh; i++) {
