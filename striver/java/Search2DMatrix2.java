@@ -68,7 +68,20 @@ public class Search2DMatrix2 {
         
         return searchMatrixRec(matrix, rlow, rhigh, clow, chigh, target);
     }
+    // attmpt 2
+    public static boolean searchMatrixAttempt2(int[][] matrix, int target) {
+        int row = 0, col = matrix[0].length-1, n = matrix.length, m = matrix[0].length-1;
 
+        while (row < n && col >= 0) {
+            if (target == matrix[row][col])
+                return true;
+            else if (target < matrix[row][col])
+                col--;
+            else
+                row++;
+        }
+        return false;
+    }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -76,7 +89,7 @@ public class Search2DMatrix2 {
         int target = sc.nextInt();
         int[][] matrix = parseMatrix(input);
 
-        boolean ans = searchMatrix(matrix, target);
+        boolean ans = searchMatrixAttempt2(matrix, target);
         // boolean ans = thoroughSearch(matrix, 1, 2, 1, 2, target);
         System.out.println(ans);
         // for (int[] arr : matrix) {
