@@ -8,9 +8,9 @@ import java.util.Scanner;
 
 public class RemoveOutermostParanthesis {
     public static String removeOuterParentheses(String s) {
-        ArrayList<String> decomposition = new ArrayList<>();
+        ArrayList<StringBuilder> decomposition = new ArrayList<>();
         Deque<Character> st = new ArrayDeque<>();
-        String part = "";
+        StringBuilder part = new StringBuilder();
 
         for (int i=0; i<s.length(); i++) {
             if (s.charAt(i) == '(') {
