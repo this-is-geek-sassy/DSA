@@ -4,6 +4,23 @@
 import java.util.Scanner;
 
 public class RemoveOutermostParanthesis {
+    public static String removeOuterParenthesesAlt(String s) {
+        // optimal algorithm
+        StringBuilder ans = new StringBuilder(s.length());
+        int depth = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '(') {
+                if (depth > 0) ans.append(c);
+                depth++;
+            } else {
+                depth--;
+                if (depth > 0) ans.append(c);
+            }
+        }
+        return ans.toString();
+    }
     public static String removeOuterParentheses(String s) {
         // ArrayList<StringBuilder> decomposition = new ArrayList<>();
         // Deque<Character> st = new ArrayDeque<>();
