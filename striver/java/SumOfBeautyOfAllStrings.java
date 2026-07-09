@@ -4,10 +4,34 @@ import java.util.*;
 
 public class SumOfBeautyOfAllStrings {
     public static int beautySum(String s) {
+        // int beauty = 0;
+
+        // for (int i = 0; i < s.length(); i++) {
+        //     int[] freq = new int[26];
+
+        //     for (int j = i; j < s.length(); j++) {
+        //         freq[s.charAt(j) - 'a']++;
+
+        //         int minFreq = Integer.MAX_VALUE;
+        //         int maxFreq = 0;
+
+        //         for (int f : freq) {
+        //             if (f == 0) continue;      // Ignore characters not present
+
+        //             minFreq = Math.min(minFreq, f);
+        //             maxFreq = Math.max(maxFreq, f);
+        //         }
+
+        //         beauty += (maxFreq - minFreq);
+        //     }
+        // }
+
+        // return beauty;
 
         int beauty = 0;
         Map<Character, Integer> freq = new HashMap<>();
-        TreeMap<Integer, Set<Character>> rev_freq = new TreeMap<>();
+        int minFreq = Integer.MAX_VALUE, maxFreq = Integer.MIN_VALUE;
+
 
         for (int i=0; i<s.length(); i++) {
             for (int j = i; j < s.length(); j++) {
@@ -17,22 +41,18 @@ public class SumOfBeautyOfAllStrings {
                 int newFreq = oldFreq + 1;
 
                 freq.put(ch, newFreq);
-                int freq_being_considered = newFreq;
-                
-                if (oldFreq > 0) {
-                    rev_freq.get(oldFreq).remove(ch);
-                }
-                if (oldFreq > 0 && rev_freq.get(oldFreq).isEmpty()) {
-                    rev_freq.remove(oldFreq);
-                }
-                rev_freq.computeIfAbsent(freq_being_considered, k -> new HashSet<>()).add(s.charAt(j));
+                maxFreq = Math.max(maxFreq, newFreq);
+                int min = Integer.MAX_VALUE;
+                for (Map.Entry<Character, Integer> e : freq.entrySet()) {
 
-                int minFreq = rev_freq.firstKey();
-                int maxFreq = rev_freq.lastKey();
+                    min = Math.min(e.getValue(), min);
+                }
+                minFreq = min;
                 beauty += (maxFreq - minFreq);
             }
             freq.clear();
-            rev_freq.clear();
+            maxFreq = Integer.MIN_VALUE;
+            // rev_freq.clear();
             System.out.println("beauty after " + i + "th iteration = " + beauty);
         }
         return beauty;
