@@ -21,6 +21,26 @@ public class KthMissingPositiveNumber {
         return arr[n-1] + (k - lastMissing);
     }
 
+    public static int findKthPositiveBinary (int[] arr, int k) {
+        int low = 0, high = arr.length-1, mid;
+
+        while (low <= high) {
+            mid = low + (high - low)/2;
+            int missingBeforeThis = arr[mid]-mid-1;
+            if (missingBeforeThis >= k) {
+                high = mid -1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        if (low == 0) {
+            return k;
+        }
+        
+        int prevMissing = arr[low-1]- (low-1) - 1;
+        return arr[low-1] + (k - prevMissing);
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
