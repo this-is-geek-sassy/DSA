@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class AllocateMinimumPages {
 
-    private static int getNoOfStudents (int arr[], int pages) {
-
+    private static int getNoOfStudents (int arr[], long pages) {
+        // returns the minimum number of students it requires to stay within the max-page per student limit
         int students = 1, pagesForThisStudent = 0;
 
         for (int i = 0; i < arr.length; i++) {
@@ -23,18 +23,21 @@ public class AllocateMinimumPages {
         // code here
         if (arr.length < k)
             return -1;
-        int high=-0, low =-1;
+        long high=-0, low =-1, mid;
 
         for (int e : arr) {
             high += e;
             low = Math.max(low, e);
         }
-        for (int pages=low; pages <= high; pages++) {
-            if (getNoOfStudents(arr, pages) <= k) {
-                return pages;
+        while (low <= high) {
+            mid = low + (high-low)/2;
+            if (getNoOfStudents(arr, mid) <= k) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
             }
         }
-        return -1;
+        return (int)low;
     }
 
     public static void main(String[] args) {
