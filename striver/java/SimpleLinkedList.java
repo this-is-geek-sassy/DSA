@@ -23,7 +23,25 @@ class Node {
 }
 
 public class SimpleLinkedList {
-    
+
+    private static void printList (Node head) {
+        if (head == null) {
+            System.out.println("Empty list!!");
+        }
+        System.out.println("Linked List:");
+        Node pointer = head;
+        while (pointer != null) {
+            System.out.println("val: " + pointer.data);
+            pointer = pointer.next;
+        }
+    }
+    private static Node insertAtHead (Node head, int newValue) {
+
+        Node newNode = new Node(newValue);
+        newNode.next = head;
+        head = newNode;
+        return head;
+    }
     public static void main(String[] args) {
         // Create an array
         int[] arr = {2, 5, 8, 7};
@@ -31,10 +49,18 @@ public class SimpleLinkedList {
         // Create the first node
         Node y = new Node(arr[0]);
 
-        // Print memory reference of node
-        System.out.println(y);
+        // // Print memory reference of node
+        // System.out.println(y);
 
-        // Print data stored in node
-        System.out.println(y.data);
+        // // Print data stored in node
+        // System.out.println(y.data);
+
+        Node head = y;
+        printList(head);
+        int newValue = 1;
+        head = insertAtHead(head, newValue);
+        printList(head);
+        head = insertAtHead(head, 23);
+        printList(head);
     }
 }
