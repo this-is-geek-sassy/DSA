@@ -42,6 +42,32 @@ public class SimpleLinkedList {
         head = newNode;
         return head;
     }
+    private static Node deleteAtHead (Node head) {
+        if (head == null) {
+            System.out.println("Linkedlist already empty");
+            return null;
+        }
+        Node tobeDeleted = head;
+        head = head.next;
+        // free(head);
+        System.gc();
+        return head;
+    }
+    private static Node deleteAtEnd (Node head) {
+        if (head == null) {
+            System.out.println("Linkedlist already empty");
+            return null;
+        }
+        if (head.next == null) {
+            // singleton linked list
+            return null;
+        }
+        Node pointer = head;
+        while (pointer.next.next != null)
+            pointer = pointer.next;
+        pointer.next = null;
+        return head;
+    }
     public static void main(String[] args) {
         // Create an array
         int[] arr = {2, 5, 8, 7};
@@ -61,6 +87,8 @@ public class SimpleLinkedList {
         head = insertAtHead(head, newValue);
         printList(head);
         head = insertAtHead(head, 23);
+        printList(head);
+        head = deleteAtHead(head);
         printList(head);
     }
 }
