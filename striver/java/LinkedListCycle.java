@@ -1,7 +1,7 @@
 
 // https://leetcode.com/problems/linked-list-cycle/description/
 
-import java.util.Scanner;
+import java.util.*;
 
 class ListNode {
     int val;
@@ -27,6 +27,8 @@ public class LinkedListCycle {
     }
     private static void createCycle (ListNode head, int pos) {
 
+        if (pos < 0)
+            return;
         ListNode theNode = head;
         while (head.next != null)
             head = head.next;
@@ -36,6 +38,50 @@ public class LinkedListCycle {
         }
         System.out.println("Cycle to be created at node: " + theNode.val);
         head.next = theNode;
+    }
+
+    public static ListNode detectCycle(ListNode head) {
+        
+        Set<ListNode> set = new HashSet<>();
+        // if (!hasCycle(head))
+        //     return null;
+
+        // int pos = 0;
+        while (head!= null) {
+            if (set.contains(head)) {
+                return head;
+            }
+            set.add(head);
+            head = head.next;
+        }
+        return null;
+    }
+
+    public static ListNode detectCycleBetter (ListNode head) {
+
+        if (head == null || head.next == null)
+            return null;
+
+        ListNode slow = head, fast = head;
+        boolean hasLoop = false;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            
+            if (slow == fast) {
+                hasLoop = true;
+                break;
+            }
+        }
+        if (hasLoop == false)
+            return null;
+        System.out.println(slow.val);
+        slow = head;
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return slow;
     }
 
     public static void printList (ListNode head) {
@@ -56,6 +102,7 @@ public class LinkedListCycle {
                 fast = fast.next.next;
             else 
                 return false;
+            // set.add(fast);
             if (slow == fast)
                 return true;
         }
@@ -77,8 +124,8 @@ public class LinkedListCycle {
         printList(head);
         int pos = sc.nextInt();
         createCycle(head, pos);
-        boolean ans = hasCycle(head);
-        System.out.println(ans);
+        ListNode ans = detectCycleBetter(head);
+        System.out.println(ans.val);
         sc.close();
     }
 }
