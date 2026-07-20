@@ -52,6 +52,21 @@ public class ReverseLinkedList {
         }
         System.out.println();
     }
+
+    public static ListNode reverseListBetter(ListNode head) {
+        if (head.next == null)
+            return head;
+        ListNode first = null, second = head, third = head.next;
+
+        while (third != null) {
+            second.next = first;
+            first = second;
+            second = third;
+            third = third.next;
+        }
+        second.next = first;  // last node pointer change
+        return second;
+    }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -65,7 +80,7 @@ public class ReverseLinkedList {
         }
         ListNode head = arrayToLL(arr);
         printList(head);
-        ListNode newHead = reverseList(head);
+        ListNode newHead = reverseListBetter(head);
         printList(newHead);
         sc.close();
     }
