@@ -27,6 +27,19 @@ public class ReverseLinkedList {
         }
         return head;
     }
+
+    public static ListNode reverseListRecursive(ListNode head) {
+
+        if (head == null || head.next == null) {
+            // 0 or 1 node
+            return head;
+        }
+        ListNode newHead = reverseListRecursive(head.next);
+        head.next.next = head;
+        head.next = null;
+        return newHead;
+    }
+
     public static ListNode reverseList(ListNode head) {
         Deque<ListNode> dq = new ArrayDeque<>();
         while (head != null) {
@@ -80,7 +93,7 @@ public class ReverseLinkedList {
         }
         ListNode head = arrayToLL(arr);
         printList(head);
-        ListNode newHead = reverseListBetter(head);
+        ListNode newHead = reverseListRecursive(head);
         printList(newHead);
         sc.close();
     }
