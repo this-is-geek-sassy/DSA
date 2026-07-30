@@ -11,16 +11,19 @@ public class DeleteMiddleNodeofLL {
         ListNode slow = head, fast = head;
 
         while (fast.next != null && fast.next.next != null) {
+            if (fast.next.next.next == null)
+                break;
             slow = slow.next;
             fast = fast.next.next;
         }
         ListNode temp = head;
         // slow should point to the exxact middle for odd length now
         if (fast.next == null) {
-            while (temp.next != slow) {
-                temp = temp.next;
-            }
-            temp.next = slow.next;
+            // while (temp.next != slow) {
+            //     temp = temp.next;
+            // }
+            // temp.next = slow.next;
+            slow.next = slow.next.next;
             return head;
         }
         else {
