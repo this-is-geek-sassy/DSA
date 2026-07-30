@@ -3,11 +3,11 @@ import java.util.Scanner;
 
 
 // link: https://leetcode.com/problems/delete-node-in-a-linked-list/description/
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) { val = x; }
-}
+// class ListNode {
+//     int val;
+//     ListNode next;
+//     ListNode(int x) { val = x; }
+// }
 public class DeleteNodeInLinkedList {
 
     private static ListNode insertAtHead (ListNode head, int newValue) {

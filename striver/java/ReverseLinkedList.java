@@ -5,11 +5,11 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Scanner;
 
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) { val = x; }
-}
+// class ListNode {
+//     int val;
+//     ListNode next;
+//     ListNode(int x) { val = x; }
+// }
 
 public class ReverseLinkedList {
     private static ListNode insertAtHead (ListNode head, int newValue) {
