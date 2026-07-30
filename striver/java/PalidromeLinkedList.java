@@ -36,6 +36,47 @@ public class PalidromeLinkedList {
         }
         System.out.println();
     }
+    public static ListNode reverseListRecursive(ListNode head) {
+
+        if (head == null || head.next == null) {
+            // 0 or 1 node
+            return head;
+        }
+        ListNode newHead = reverseListRecursive(head.next);
+        head.next.next = head;
+        head.next = null;
+        return newHead;
+    }
+    private static ListNode copyLL (ListNode head1, ListNode head2) {
+        if (head2 == null)
+            return null;
+        
+        head1 = new ListNode(-999);
+        ListNode head1_cpy = head1;
+        while (head2 != null) {
+            head1.next = new ListNode(head2.val);
+            head1 = head1.next;
+            head2 = head2.next;
+        }
+        return head1_cpy;
+    }
+    public static boolean isPalindrome2(ListNode head) {
+        ListNode head2 = null;
+        head2 = copyLL(head2, head);
+
+        // printList(head2.next);
+        head2 = head2.next;
+        head2 = reverseListRecursive(head2);
+        while (head != null) {
+            if (head.val != head2.val) {
+                return false;
+            }
+            head = head.next;
+            head2 = head2.next;
+        }
+
+        return true;
+    }
     public static boolean isPalindrome(ListNode head) {
         
         Deque<ListNode> dq = new ArrayDeque<>();
@@ -70,9 +111,9 @@ public class PalidromeLinkedList {
         }
 
         ListNode head = arrayToLL(arr);
-        printList(head);
+        // printList(head);
 
-        boolean ans = isPalindrome(head);
+        boolean ans = isPalindrome2(head);
         System.out.println(ans);
 
         sc.close();
