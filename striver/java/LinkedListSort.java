@@ -25,33 +25,37 @@ public class LinkedListSort {
         return head.next;
     }
     
-    public static ListNode MergeSort(ListNode head, ListNode tail) {
+    public static ListNode MergeSort(ListNode head /*, ListNode tail */) {
 
-        if (head == tail)
+        if (head.next == null)
             return head;
         // mid calculation:
         ListNode slow = head, fast = head;
 
         while (fast.next != null && fast.next.next != null) {
-            if (fast.next.next.next == null)
-                break;
+            // if (fast.next.next.next == null)
+            //     break;
             slow = slow.next;
             fast = fast.next.next;
         }
+        ListNode head2 = slow.next;
         slow.next = null;
-        ListNode newHead = MergeSort(head, slow);
-        ListNode newHead2 = MergeSort(slow.next, tail);
+        ListNode newHead = MergeSort(head);
+        ListNode newHead2 = MergeSort(head2);
 
         return merge(newHead, newHead2);
 
     }
     public static ListNode sortList(ListNode head) {
         
+        if (head == null || head.next == null)
+            return head;
+
         // tail pointer: 
-        ListNode tail = head;
-        while (tail.next != null) 
-            tail = tail.next;
-        return MergeSort(head, tail);
+        // ListNode tail = head;
+        // while (tail.next != null) 
+        //     tail = tail.next;
+        return MergeSort(head);
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
