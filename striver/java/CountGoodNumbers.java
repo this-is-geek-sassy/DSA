@@ -33,10 +33,35 @@ public class CountGoodNumbers {
         }
     }
 
+    public static long myPow(long x, long n) {
+        
+        // System.out.println(n);
+        if (n==0)
+            return 1;
+        if (n < 0)
+            return myPow((long)1/x, (long)-n);
+
+        long half = myPow(x, n / 2);
+        if (n % 2 == 1)
+            return half * half * x;
+        else 
+            return half * half;
+    }
+
     public static int countGoodNumbers(long n) {
-        return countRec(n-1);
+        // return countRec(n-1);
 
+        long odd = n/2;
+        long even = (n+1) / 2;
 
+        long five = myPow(5, even);
+        five = five % (pow10(9) + 7);
+
+        long four = 0;
+        if (odd != 0)
+            four = myPow(4, odd) % (pow10(9) + 7);
+
+        return (int)((five + four) % (pow10(9) + 7));
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
