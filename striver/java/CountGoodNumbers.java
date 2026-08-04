@@ -43,9 +43,9 @@ public class CountGoodNumbers {
 
         long half = myPow(x, n / 2);
         if (n % 2 == 1)
-            return half * half * x;
+            return (half * half * x) % (pow10(9) + 7);
         else 
-            return half * half;
+            return (half * half) % (pow10(9) + 7);
     }
 
     public static int countGoodNumbers(long n) {
@@ -55,13 +55,13 @@ public class CountGoodNumbers {
         long even = (n+1) / 2;
 
         long five = myPow(5, even);
-        five = five % (pow10(9) + 7);
+        // five = five % (pow10(9) + 7);
 
-        long four = 0;
+        long four = 1;
         if (odd != 0)
-            four = myPow(4, odd) % (pow10(9) + 7);
+            four = myPow(4, odd);
 
-        return (int)((five + four) % (pow10(9) + 7));
+        return (int)((five * four) % (pow10(9) + 7));
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
