@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class CountGoodNumbers {
 
-    private static final long[] POW10 = new long[8];
+    private static final long[] POW10 = new long[10];
     static {
         POW10[0] = 1;
         for (int i = 1; i < POW10.length; i++) {
@@ -17,23 +17,33 @@ public class CountGoodNumbers {
         return POW10[n];
     }
 
-    public static int countGoodNumbers(long n) {
-        
-        if (n==1)
+    private static int countRec (long n) {
+
+        if (n==0)
             return 5;
 
+        // n--;
         if ((n&1) != 0) {
-            return (int)((countGoodNumbers(n-1) + 5) % (pow10(7) + 7));
+            // odd indices
+            return (int)(((long) countRec(n-1) * 4) % (pow10(9) + 7));
         }
         else {
-            
+            // even indices
+            return (int)(((long) countRec(n-1) * 5) % (pow10(9) + 7));
         }
+    }
+
+    public static int countGoodNumbers(long n) {
+        return countRec(n-1);
+
+
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        int n = sc.nextInt();
-
+        long n = sc.nextLong();
+        int ans = countGoodNumbers(n);
+        System.out.println(ans);
         sc.close();
     }
 }
