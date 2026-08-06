@@ -2,6 +2,7 @@
 import java.util.Scanner;
 
 // link: https://takeuforward.org/data-structure/count-all-subsequences-with-sum-k
+// https://www.geeksforgeeks.org/problems/check-if-there-exists-a-subsequence-with-sum-k/1
 
 public class CountSubSequenceWithSumK {
 
@@ -15,7 +16,7 @@ public class CountSubSequenceWithSumK {
         //     count++;
         //     // return count;
         // }
-        
+
         // int notTake = helper(mainArr, k, n+1, runningSum);
         count = helper(mainArr, k, n+1, runningSum, count);
         // int take = helper(mainArr, k, n+1, runningSum + mainArr[n]);
@@ -24,10 +25,23 @@ public class CountSubSequenceWithSumK {
         return count;
     }
 
-    public static int checkSubsequenceSum (int[] arr, int k) {
+    public static int countSubsequenceSum (int[] arr, int k) {
 
         int count = helper(arr, k, 0, 0, 0);
         return count;
+    }
+    private static boolean helper2 (int[] mainArr, int k, int n, int runningSum) {
+
+        if (k == runningSum)
+            return true;
+        if (n == mainArr.length)
+            return false;
+
+        return helper2(mainArr, k, n+1, runningSum) || helper2(mainArr, k, n+1, runningSum + mainArr[n]);
+    }
+    public static boolean checkSubsequenceSum(int[] arr, int k) {
+        // code here
+        return helper2(arr, k, 0, 0);
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -41,7 +55,7 @@ public class CountSubSequenceWithSumK {
         for (String s : inp_arr) {
             arr[i++] = Integer.parseInt(s);
         }
-        int ans = checkSubsequenceSum(arr, k);
+        boolean ans = checkSubsequenceSum(arr, k);
         System.out.println(ans);
     }
 }
