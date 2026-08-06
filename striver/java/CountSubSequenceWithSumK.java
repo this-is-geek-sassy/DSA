@@ -5,23 +5,28 @@ import java.util.Scanner;
 
 public class CountSubSequenceWithSumK {
 
-    private static int helper (int[] mainArr, int k, int n, int runningSum) {
+    private static int helper (int[] mainArr, int k, int n, int runningSum, int count) {
 
         if (n == mainArr.length) {
-            return (runningSum == k) ? 1 : 0;
+            // return (runningSum == k) ? 1 : 0;
+            return (runningSum == k) ? ++count : count;
         }
         // if (runningSum == k) {
         //     count++;
         //     // return count;
         // }
-        int notTake = helper(mainArr, k, n+1, runningSum);
-        int take = helper(mainArr, k, n+1, runningSum + mainArr[n]);
-        return notTake + take;
+        
+        // int notTake = helper(mainArr, k, n+1, runningSum);
+        count = helper(mainArr, k, n+1, runningSum, count);
+        // int take = helper(mainArr, k, n+1, runningSum + mainArr[n]);
+        count = helper(mainArr, k, n+1, runningSum + mainArr[n], count);
+        // return notTake + take;
+        return count;
     }
 
     public static int checkSubsequenceSum (int[] arr, int k) {
 
-        int count = helper(arr, k, 0, 0);
+        int count = helper(arr, k, 0, 0, 0);
         return count;
     }
     public static void main(String[] args) {
