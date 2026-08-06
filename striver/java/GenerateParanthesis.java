@@ -1,7 +1,9 @@
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 // link: https://leetcode.com/problems/generate-parentheses/description/
 
@@ -48,12 +50,49 @@ public class GenerateParanthesis {
         }
         return ans;
     }
+
+    private static Set<String> generateRecursively (int n, Set<String> set) {
+
+        if (n==1) {
+            set.add("()");
+            return set;
+        }
+        set = generateRecursively(n-1, set);
+        Set<String> next = new HashSet<>();
+
+        for (String s : set) {
+            String newEntry = "()" + s;
+            if (!next.contains(newEntry)) {
+                // set.remove(s);
+                next.add(newEntry);
+            }
+            newEntry = s + "()";
+            if (!next.contains(newEntry)) {
+                // set.remove(s);
+                next.add(newEntry);
+            }
+
+            newEntry = "(" + s + ")";
+            if (!next.contains(newEntry)) {
+                // set.remove(s);
+                next.add(newEntry);
+            }
+            // set.remove(s);
+        }
+        return next;
+    }
+    public static List<String> generateParenthesisBetter(int n) {
+        
+        Set<String> set = new HashSet<>();
+        set = generateRecursively(n, set);
+        return new ArrayList<>(set);
+    }
     public static void main(String[] args) {
         
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
 
-        List<String> ans = generateParenthesis(n);
+        List<String> ans = generateParenthesisBetter(n);
         // System.out.println(new StringBuilder().toString().getClass());
         System.out.println(ans);
         sc.close();
