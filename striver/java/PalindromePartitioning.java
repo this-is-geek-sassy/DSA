@@ -19,34 +19,39 @@ public class PalindromePartitioning {
         return true;
     }
 
-    private static void helper (String s, int start, int end, List<List<String>> list,
+    private static void helper (String s, int start, List<List<String>> list,
         List<String> runningList
     ) {
-        if (start+1 == end)
+        if (start == s.length())
         {
-            runningList.add(s.substring(start, end));
+            // runningList.add(s.substring(start, end));
+            list.add(new ArrayList<>(runningList));
             return;
         }
-        for (int i=start; i< s.length()-1; i++) {
+        for (int i=start; i< s.length(); i++) {
             String left = s.substring(start, i+1);
             // String right = s.substring(i+1, end);
             if (isPlaindrome(left)) {
                 runningList.add(left);
-                helper(s, i+1, end, list, runningList);
+                helper(s, i+1, list, runningList);
                 
-                list.add(new ArrayList<>(runningList));
-                runningList.clear();
+                
+                runningList.remove(runningList.size()-1);
             }
         }
     }
 
-    public List<List<String>> partition(String s) {
-        
+    public static List<List<String>> partition(String s) {
+        List<List<String>> list = new ArrayList<>();
+        helper(s, 0, list, new ArrayList<>());
+        return list;
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
         String input = sc.nextLine();
+        List<List<String>> ans = partition(input);
+        System.out.println(ans);
         sc.close();
     }
 }
