@@ -24,9 +24,23 @@ public class FrogJumpDp3 {
         memory[runningIdx] = minEnergy;
         return minEnergy;
     }
+    // Tabulation
+    private static int helper2 (int[] heights, int[] energies) {
+
+        // heights.length == energies.length, by design
+        energies[energies.length-2] = Math.abs(heights[heights.length-2] - heights[heights.length-1]);
+
+        for (int i = energies.length-3; i>=0; i--) {
+            int energy1 = Math.abs(heights[i] - heights[i+2]) + energies[i+2];
+            int energy2 = Math.abs(heights[i] - heights[i+1]) + energies[i+1];
+            energies[i] = Math.min(energy1, energy2);
+        }
+        return energies[0];
+    }
     public static int frogJump (int[] heights) {
         int[] memory = new int[heights.length];
-        return helper(heights, 0, memory);
+        // return helper(heights, 0, memory);
+        return helper2(heights, memory);
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
