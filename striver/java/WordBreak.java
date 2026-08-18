@@ -5,33 +5,46 @@ import java.util.*;
 
 public class WordBreak {
 
-    private static boolean doesExistInDict (String s, List<String> wordDict) {
+    // trivial (no-use) function
+    // private static boolean doesExistInDict (String s, List<String> wordDict) {
 
-        for (int i=0; i<wordDict.size(); i++) {
-            if (s.equals(wordDict.get(i))) {
-                return true;
-            }
-        }
-        return false;
-    }
+    //     for (int i=0; i<wordDict.size(); i++) {
+    //         if (s.equals(wordDict.get(i))) {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
 
-    private static boolean helper (String s, Set<String> wordDict, int maxWordLength) {
+    private static boolean helper (String s, Set<String> wordDict, int maxWordLength, Boolean[] memory, int runnningIdx) {
 
         // System.out.println("runnningIdx = " + runningIdx);
         // System.out.println("String = " + s);
         // base case:
-        if (s.isEmpty()) {
+        if (runnningIdx == s.length()) {
             // successfully broken into dictionary elements, so return true
             return true;
         }
-        for (int i=1; i <= Math.min(s.length(), maxWordLength); i++) {
-            String chunk = s.substring(0, i);
+        if (memory[runnningIdx] != null) {
+            return memory[runnningIdx];
+        }
+        // if (memory[runnningIdx] == false) {
+        //     return false;
+        // }
+        for (int i=runnningIdx+1; i <= Math.min(s.length(), runnningIdx + maxWordLength); i++) {
+            String chunk = s.substring(runnningIdx, i);
             if (wordDict.contains(chunk)) {
-                boolean result = helper(s.substring(i), wordDict, maxWordLength);
-                if (result == true)
+                boolean result = helper(s, wordDict, maxWordLength, memory, i);
+                if (result == true) {
+                    memory[runnningIdx] = true;
                     return true;
+                } 
+                // else {
+                //     memory[i] = -1;
+                // }
             }
         }
+        memory[runnningIdx] = false;
         return false;
     }
 
@@ -44,7 +57,8 @@ public class WordBreak {
                 maxWordLength = t.length();
             }
         }
-        return helper(s, dict, maxWordLength);
+        Boolean[] memory = new Boolean[s.length()];
+        return helper(s, dict, maxWordLength, memory, 0);
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
