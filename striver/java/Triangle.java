@@ -6,28 +6,33 @@ import java.util.*;
 
 public class Triangle {
 
-    private static int helper (List<List<Integer>> triangle, int rowNow, int colNow, List<List<Integer>> memory) {
+    private static int helper (List<List<Integer>> triangle, int rowNow, int colNow, int[][] memory) {
 
         if (rowNow == triangle.size()-1) {
             return triangle.get(rowNow).get(colNow);
         }
 
-        if (rowNow < memory.size() && colNow < memory.get(rowNow).size()) {
-            return memory.get(rowNow).get(colNow);
+        if (memory[rowNow][colNow] != Integer.MAX_VALUE) {
+            return memory[rowNow][colNow];
         }
-        if (memory.size()-1 < rowNow) {
-            memory.add(new ArrayList<>());
-        }
+        // if (memory.size()-1 < rowNow) {
+        //     memory.add(new ArrayList<>());
+        // }
         int optionA = triangle.get(rowNow).get(colNow) + helper(triangle, rowNow+1, colNow, memory);
         int optionB = triangle.get(rowNow).get(colNow) + helper(triangle, rowNow+1, colNow+1, memory);
         
-        memory.get(rowNow).add(Math.min(optionA, optionB));
-        return memory.get(rowNow).get(colNow);
+        // memory.get(rowNow).add(Math.min(optionA, optionB));
+        memory[rowNow][colNow] = Math.min(optionA, optionB);
+        // return memory.get(rowNow).get(colNow);
+        return memory[rowNow][colNow];
     }
 
     public static int minimumTotal(List<List<Integer>> triangle) {
 
-        List<List<Integer>> memory = new ArrayList<>();
+        int[][] memory = new int[triangle.size()][triangle.get(triangle.size()-1).size()];
+
+        for (int[] memRow: memory)
+            Arrays.fill(memRow, Integer.MAX_VALUE);
 
         return helper(triangle, 0, 0, memory);
     }
