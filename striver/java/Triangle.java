@@ -39,8 +39,8 @@ public class Triangle {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        String input = sc.nextLine();
-        String[] inpArr = input.trim().substring(1, input.length()-1).split("\\],\\[");
+        String input = sc.nextLine().trim();
+        String[] inpArr = input.substring(1, input.length() - 1).split("\\],\\s*\\[");
 
         List<List<Integer>> triangle = new ArrayList<>();
 
@@ -52,7 +52,7 @@ public class Triangle {
             
             for (String _s : sArr) {
                 // System.out.println("Parsing: [" + _s + "]");
-                row.add(Integer.parseInt(_s));
+                row.add(Integer.parseInt(_s.trim()));
             }
             triangle.add(row);
         }
