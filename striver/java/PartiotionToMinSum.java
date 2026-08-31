@@ -8,12 +8,12 @@ import java.util.Scanner;
 public class PartiotionToMinSum {
 
     static class State {
-        int index;
+        // int index;
         int length;
         int runningSum;
 
         public State(int index, int length, int runningSum) {
-            this.index = index;
+            // this.index = index;
             this.length = length;
             this.runningSum = runningSum;
         }
@@ -25,14 +25,15 @@ public class PartiotionToMinSum {
 
             State other = (State) obj;
 
-            return index == other.index
-                    && length == other.length
+            return 
+                    // index == other.index && 
+                    length == other.length
                     && runningSum == other.runningSum;
         }
 
         @Override
         public int hashCode () {
-            return Objects.hash(index, length, runningSum);
+            return Objects.hash(length, runningSum);
         }
     }
 
