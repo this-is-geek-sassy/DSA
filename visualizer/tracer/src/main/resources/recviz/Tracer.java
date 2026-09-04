@@ -61,6 +61,14 @@ public final class Tracer {
 
     private Tracer() {}
 
+    /**
+     * No-op whose only purpose is to force this class to initialize (registering the
+     * shutdown hook) even when the instrumented recursive method is never called at
+     * runtime. The instrumenter injects {@code static { Tracer.ping(); }} into the
+     * primary class for exactly that reason.
+     */
+    public static void ping() {}
+
     /** Records a call entry. Returns the node id to pass to {@link #exit}, or 0 if not recording. */
     public static synchronized long enter(String method, String[] argNames, Object... argValues) {
         if (!beginEvent()) {

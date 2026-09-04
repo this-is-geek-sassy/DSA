@@ -289,6 +289,17 @@ export default function TreeCanvas() {
           {layout?.nodes.map(renderNode)}
         </g>
       </svg>
+      {trace && trace.nodeCount === 0 && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="max-w-sm rounded-lg border border-zinc-800 bg-zinc-900/60 p-5 text-center">
+            <p className="mb-1 text-sm font-medium text-zinc-200">No recursive calls recorded</p>
+            <p className="text-xs text-zinc-500">
+              The instrumented recursive method never ran — check that <span className="mono">main()</span> actually
+              calls it (the trace may come from an iterative alternative).
+            </p>
+          </div>
+        </div>
+      )}
       {trace && (
         <div className="absolute right-3 top-3 flex gap-2">
           <button

@@ -1,6 +1,10 @@
 /**
  * Headless verification of the trace pipeline against real generated traces.
  * Run: npx tsx scripts/verify-trace.ts
+ *
+ * Checks are structural invariants (self-consistency of each trace) plus a few
+ * semantic spot checks, so the suite survives edits to the striver source files.
+ * Regenerate traces with the recviz CLI before running if sources changed.
  */
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -20,57 +24,58 @@ function load(name: string): TraceFile {
   return JSON.parse(readFileSync(join(tracesDir, name), 'utf8')) as TraceFile;
 }
 
-// ---- LCS3: plain recursion -------------------------------------------------
-{
-  const t = parseTrace(load('LCS3.json'));
-  check('LCS3 node count', t.nodeCount === 15, `got ${t.nodeCount}`);
-  check('LCS3 single root', t.roots.length === 1);
-  check('LCS3 maxSeq = events-1', t.maxSeq === 29, `got ${t.maxSeq}`);
+/** Invariants that must hold for every well-formed trace. */
+function checkInvariants(label: string, name: string) {
+  const raw = load(name);
+  const t = parseTrace(raw);
+  check(`${label} node count = enters`, t.nodeCount === raw.events.filter((e) => e.t === 'e').length);
+  check(`${label} maxSeq = events-1`, t.maxSeq === raw.events.length - 1, `got ${t.maxSeq}`);
+  check(`${label} single root`, t.roots.length === 1);
   const allResolved = [...t.byId.values()].every((n) => n.hasResult && n.exitSeq !== null);
-  check('LCS3 every call has a result', allResolved);
+  check(`${label} every call has an exit`, allResolved);
+  const doneAll = [...t.byId.values()].every((n) => stateAt(n, t.maxSeq) === 'done');
+  check(`${label} all done at end`, doneAll);
+  const activeAt0 = [...t.byId.values()].filter((n) => stateAt(n, 0) === 'active');
+  check(`${label} only root active at step 0`, activeAt0.length === 1);
+  // parent/child referential integrity
+  let linksOk = true;
+  t.byId.forEach((n) => {
+    if (n.parentId != null) {
+      const p = t.byId.get(n.parentId);
+      if (!p || !p.children.includes(n)) linksOk = false;
+    }
+  });
+  check(`${label} parent/child links consistent`, linksOk);
+  return t;
+}
+
+// ---- LCS3: recursion with memo table ----------------------------------------
+{
+  const t = checkInvariants('LCS3', 'LCS3.json');
   const root = t.roots[0];
   check('LCS3 root args', root.args.i === 0 && root.args.j === 0 && root.args.s1 === 'abcde');
   check('LCS3 root result', root.result === 1, `got ${JSON.stringify(root.result)}`);
   check('LCS3 nodes are non-void', [...t.byId.values()].every((n) => !n.isVoid));
-  check('LCS3 state transitions', stateAt(root, 0) !== 'waiting' && stateAt(root, t.maxSeq) === 'done');
   check('LCS3 compact label', compactArgs(root).includes('i=0'), compactArgs(root));
-  // at final step every node is done; at step 0 only the root is active
-  const doneAll = [...t.byId.values()].every((n) => stateAt(n, t.maxSeq) === 'done');
-  const activeAt0 = [...t.byId.values()].filter((n) => stateAt(n, 0) === 'active');
-  check('LCS3 all done at end', doneAll);
-  check('LCS3 only root active at step 0', activeAt0.length === 1);
+  check('LCS3 memo arg excluded from dupKey', !root.dupKey.includes('memory'), root.dupKey);
 }
 
 // ---- LCS2: memoized — overlapping subproblems must be detectable -----------
 {
-  const t = parseTrace(load('LCS2.json'));
-  check('LCS2 node count', t.nodeCount === 12, `got ${t.nodeCount}`);
+  const t = checkInvariants('LCS2', 'LCS2.json');
   check('LCS2 detects duplicates', t.dupKeys.size > 0, `${t.dupKeys.size} dup keys`);
-  const root = t.roots[0];
-  check('LCS2 root result', root.result === 'ace', `got ${JSON.stringify(root.result)}`);
-  // memo table arg (String[][] memory) must be excluded from dupKey: verify via a
-  // repeated (i,j) pair sharing the same key even though memory mutated in between.
-  const byI = new Map<string, number>();
-  t.byId.forEach((n) => {
-    const k = `${n.method}@${n.args.i},${n.args.j}`;
-    byI.set(k, (byI.get(k) ?? 0) + 1);
-  });
-  const repeated = [...byI.values()].filter((c) => c > 1).length;
-  check('LCS2 has repeated (i,j) subproblems', repeated > 0, `${repeated} repeated`);
+  check('LCS2 root result', t.roots[0].result === 'ace', `got ${JSON.stringify(t.roots[0].result)}`);
 }
 
 // ---- CombinationSum: void backtracking -------------------------------------
 {
-  const t = parseTrace(load('CombinationSum.json'));
-  check('CombinationSum node count', t.nodeCount === 55, `got ${t.nodeCount}`);
-  const allVoid = [...t.byId.values()].every((n) => n.hasResult && n.result === null);
-  check('CombinationSum void returns serialized as null', allVoid);
-  const allFlagged = [...t.byId.values()].every((n) => n.isVoid);
-  check('CombinationSum void flag set on all nodes', allFlagged);
-  const withList = t.roots[0];
+  const t = checkInvariants('CombinationSum', 'CombinationSum.json');
+  const allVoid = [...t.byId.values()].every((n) => n.result === null && n.isVoid);
+  check('CombinationSum void returns flagged', allVoid);
+  const rootArgs = t.roots[0].args;
   check(
     'CombinationSum collection args serialized',
-    Array.isArray(withList.args.mainArr) && Array.isArray(withList.args.runningList),
+    Array.isArray(rootArgs.mainArr) && Array.isArray(rootArgs.runningList),
   );
   check('CombinationSum fmtVal on arrays', fmtVal([2, 3, 6, 7]) === '[2,3,6,7]', fmtVal([2, 3, 6, 7]));
 }

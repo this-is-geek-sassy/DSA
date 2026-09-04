@@ -86,7 +86,13 @@ public final class Runner {
 
             if (!Files.exists(absOut)) {
                 throw new IllegalStateException("The program finished (exit " + exit
-                        + ") but no trace was written");
+                        + ") but no trace was written — the Tracer shutdown hook did not run");
+            }
+            String head = Files.readString(absOut);
+            if (head.contains("\"events\":0")) {
+                System.out.println("[recviz] WARNING: trace has 0 events — the recursive method(s) ["
+                        + String.join(", ", res.recursiveMethods())
+                        + "] were never called at runtime. Check that main() actually reaches them.");
             }
             return new RunResult(absOut, exit, res.recursiveMethods());
         } finally {

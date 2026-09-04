@@ -4,6 +4,8 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.InitializerDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.LambdaExpr;
@@ -103,12 +105,22 @@ public final class Instrumenter {
 
         // Primary type: the public top-level type, else the first top-level type.
         // (getPrimaryTypeName() is unreliable here because the CU has no file storage.)
-        String className = cu.getTypes().stream()
+        var primaryType = cu.getTypes().stream()
                 .filter(t -> t.isPublic())
                 .findFirst()
                 .or(() -> cu.getTypes().stream().findFirst())
-                .map(t -> t.getNameAsString())
                 .orElseThrow(() -> new IllegalArgumentException("No top-level class found"));
+        String className = primaryType.getNameAsString();
+
+        // Force Tracer class initialization (which registers the shutdown hook that
+        // writes the trace) even if no recursive call happens at runtime — e.g. when
+        // main() exercises an iterative alternative instead of the recursive method.
+        // Placed first so it runs before any user static initializers.
+        if (primaryType instanceof ClassOrInterfaceDeclaration coid && !coid.isInterface()) {
+            BlockStmt pingBody = new BlockStmt();
+            pingBody.addStatement(StaticJavaParser.parseStatement("Tracer.ping();"));
+            coid.getMembers().add(0, new InitializerDeclaration(true, pingBody));
+        }
         String packageName = cu.getPackageDeclaration()
                 .map(pd -> pd.getNameAsString())
                 .orElse(null);
