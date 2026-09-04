@@ -1,0 +1,8 @@
+tracer/target/
+.m2repo/
+.m2w/
+.shots/
+web/node_modules/
+web/dist/
+web/public/traces/*.json
+!web/public/traces/manifest.json

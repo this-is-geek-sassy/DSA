@@ -32,6 +32,6 @@ public class LCS2 {
         String text2 = sc.nextLine();
         String ans = longestCommonSubsequence(text1, text2);
         System.out.println(ans);
-
+        sc.close();
     }
 }
