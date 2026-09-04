@@ -48,11 +48,34 @@ public class LCS3_2 {
         }
         return findMax(s1, s2, s1.length()-1, s2.length()-1, memory);
     }
+    public static int longestCommonSubstring2 (String s1, String s2) {
+        // dp[i][j] = length of the longest common substring
+        // ending exactly at s1[i] and s2[j]
+        int[][] dp = new int[s1.length()][s2.length()];
+
+        int maxLen = 0;
+        for (int i = 0; i < s2.length(); i++) {
+            dp[0][i] = (s1.charAt(0) == s2.charAt(i)) ? 1 : 0;
+            maxLen = Math.max(maxLen, dp[0][i]);
+        }
+        for (int i = 0; i < s1.length(); i++) {
+            dp[i][0] = (s1.charAt(i) == s2.charAt(0)) ? 1 : 0;
+            maxLen = Math.max(maxLen, dp[i][0]);
+        }
+        
+        for (int i = 1; i < s1.length(); i++) {
+            for (int j = 1; j < s2.length(); j++) {
+                dp[i][j] = (s1.charAt(i) == s2.charAt(j)) ? (1 + dp[i-1][j-1]) : 0;
+                maxLen = Math.max(maxLen, dp[i][j]);
+            }
+        } 
+        return maxLen;
+    }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String text1 = sc.nextLine();
         String text2 = sc.nextLine();
-        int ans = longestCommonSubstring(text1, text2);
+        int ans = longestCommonSubstring2(text1, text2);
         System.out.println(ans);
         sc.close();
     }
