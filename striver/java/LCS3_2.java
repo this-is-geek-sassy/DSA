@@ -75,7 +75,7 @@ public class LCS3_2 {
         Scanner sc = new Scanner(System.in);
         String text1 = sc.nextLine();
         String text2 = sc.nextLine();
-        int ans = longestCommonSubstring2(text1, text2);
+        int ans = longestCommonSubstring(text1, text2);
         System.out.println(ans);
         sc.close();
     }
