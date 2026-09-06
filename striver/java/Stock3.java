@@ -17,7 +17,7 @@ public class Stock3 {
             return memory[a][txnCount][i];
         }
         if (holding) {
-            memory[a][txnCount][i] = Math.max(prices[i] + helper(prices, i, false, memory, txnCount+1), helper(prices, i+1, holding, memory, txnCount));
+            memory[a][txnCount][i] = Math.max(prices[i] + helper(prices, i+1, false, memory, txnCount+1), helper(prices, i+1, holding, memory, txnCount));
         } else {
             memory[a][txnCount][i] = Math.max(helper(prices, i+1, holding, memory, txnCount), -prices[i] + helper(prices, i+1, true, memory, txnCount));
         }
