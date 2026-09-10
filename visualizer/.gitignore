@@ -6,3 +6,7 @@ web/node_modules/
 web/dist/
 web/public/traces/*.json
 !web/public/traces/manifest.json
+graph-web/node_modules/
+graph-web/dist/
+graph-web/public/graphs/*.json
+!graph-web/public/graphs/manifest.json
