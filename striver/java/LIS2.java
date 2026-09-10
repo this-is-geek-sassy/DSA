@@ -1,62 +1,74 @@
 // https://leetcode.com/problems/number-of-longest-increasing-subsequence/
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class LIS2 {
-    static class Result {
-        int length;
-        int count;
+    // static class Result {
+    //     int length;
+    //     int count;
 
-        public Result(int length, int count) {
-            this.length = length;
-            this.count = count;
-        }
-    }
-    private static Result helper(int[] nums, int i, int lastIdx, Result[][] memory) {
+    //     public Result(int length, int count) {
+    //         this.length = length;
+    //         this.count = count;
+    //     }
+    // }
+    private static int helper(int[] nums, int i, int lastIdx, int[][] length, int[][] count) {
 
         // No more elements to process
-        if (i == nums.length)
-            return new Result(0, 1);
+        if (i == nums.length) {
+            count[i][lastIdx+1] = 1;
+            return 0;
+        }
 
         // Shift lastIdx by 1 because lastIdx can be -1
-        if (memory[i][lastIdx + 1] != null)
-            return memory[i][lastIdx + 1];
+        if (length[i][lastIdx + 1] != -1)
+            return length[i][lastIdx + 1];
 
         // Option 1: skip nums[i]
-        Result skip = helper(nums, i + 1, lastIdx, memory);
+        int skip = helper(nums, i + 1, lastIdx, length, count);
+        int skipCount = count[i+1][lastIdx+1];
 
         // Option 2: take nums[i], if valid
-        Result take = new Result(0, 0);
+        int take = -1, takeCount = 0;
 
         if (lastIdx == -1 || nums[lastIdx] < nums[i]) {
-            Result next = helper(nums, i + 1, i, memory);
-            take = new Result(next.length + 1, next.count);
+            take = 1 + helper(nums, i + 1, i, length, count);
+            // take = new Result(next.length + 1, next.count);
+            takeCount = count[i+1][i+1];
         }
 
         // memory[i][lastIdx + 1] = Math.max(skip, take);
-        if (skip.length > take.length) {
-            memory[i][lastIdx+1] = new Result(skip.length, skip.count);
+        if (skip > take) {
+            length[i][lastIdx+1] = skip;
+            count[i][lastIdx+1] = skipCount;
         }
-        else if (take.length > skip.length) {
-            memory[i][lastIdx+1] = new Result(take.length, take.count);
+        else if (take > skip) {
+            length[i][lastIdx+1] = take;
+            count[i][lastIdx+1] = takeCount;
         }
         else {
-            memory[i][lastIdx+1] = new Result(skip.length, skip.count + take.count);
+            length[i][lastIdx+1] = skip;
+            count[i][lastIdx+1] = skipCount + takeCount;
         }
 
-        return memory[i][lastIdx + 1];
+        return length[i][lastIdx + 1];
     }
     public static int findNumberOfLIS(int[] nums) {
         int n = nums.length;
 
         // n+1 columns because lastIdx ranges from -1 to n-1
-        Result[][] memory = new Result[n][n + 1];
+        int[][] length = new int[n+1][n + 1];
+        int[][] count = new int[n+1][n + 1];
 
-        // for (int[] row : memory)
-        //     Arrays.fill(row, -1);
+        for (int[] row : length)
+            Arrays.fill(row, -1);
 
-        Result ans = helper(nums, 0, -1, memory);
-        return ans.count;
+        for (int[] row: count) {
+            Arrays.fill(row, -1);
+        }
+        helper(nums, 0, -1, length, count);
+        return count[0][0];
     }
     public static void main(String[] args) {
         Scanner sc =  new Scanner(System.in);
