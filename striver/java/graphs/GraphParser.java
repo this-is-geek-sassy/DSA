@@ -59,4 +59,30 @@ public class GraphParser {
 
         return edges;
     }
+
+    public static int[][] parseAdjMatrix(String input) {
+
+        // Remove whitespace
+        input = input.replaceAll("\\s", "");
+
+        // Remove the outer [[ and ]]
+        input = input.substring(2, input.length() - 2);
+
+        // Split rows
+        String[] rows = input.split("\\],\\[");
+
+        int n = rows.length;
+        int[][] isConnected = new int[n][n];
+
+        for (int i = 0; i < n; i++) {
+
+            String[] values = rows[i].split(",");
+
+            for (int j = 0; j < n; j++) {
+                isConnected[i][j] = Integer.parseInt(values[j]);
+            }
+        }
+
+        return isConnected;
+    }
 }

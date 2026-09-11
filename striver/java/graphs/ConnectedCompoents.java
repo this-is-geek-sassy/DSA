@@ -73,16 +73,48 @@ public class ConnectedCompoents {
         return colour;
     }
 
+    public static int findCircleNum(int[][] isConnected) {
+        
+        // build adj list
+        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+
+        int v = isConnected.length;
+        for (int i=0; i<v; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        for (int i=0; i<v; i++) {
+            for (int j=0; j<v; j++) {
+                if (isConnected[i][j] == 1) {
+                    graph.get(i).add(j);
+                }
+            }
+        }
+        int[] visited = new int[v];
+        int[] components = new int[v];
+        int colour = 0;
+
+        for (int vertex=0; vertex < v; vertex++) {
+            if (visited[vertex] == 0) {
+                ++colour;
+                connectedComponentHelper(v, graph, visited, vertex, components, colour);
+            }
+        }
+        return colour;
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int v = sc.nextInt();
-        sc.nextLine();
+        // int v = sc.nextInt();
+        // sc.nextLine();
 
         String input = sc.nextLine();
-        ArrayList<ArrayList<Integer>> edgeList = GraphParser.parseEdgeList(input);
+        // ArrayList<ArrayList<Integer>> edgeList = GraphParser.parseEdgeList(input);
+        int[][] isConnected = GraphParser.parseAdjMatrix(input);
         
         // dfs(v, edges);
-        int noOfConnComponents = connectedComponents(v, edgeList);
+        // int noOfConnComponents = connectedComponents(v, edgeList);
+        int noOfConnComponents = findCircleNum(isConnected);
         System.out.println("# Connected components = " + noOfConnComponents);
         sc.close();
     }
