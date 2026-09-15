@@ -10,3 +10,10 @@ graph-web/node_modules/
 graph-web/dist/
 graph-web/public/graphs/*.json
 !graph-web/public/graphs/manifest.json
+grid-web/node_modules/
+grid-web/dist/
+grid-web/public/grids/*.json
+!grid-web/public/grids/manifest.json
+!grid-web/public/grids/RottenOranges.json
+!grid-web/public/grids/RottenOranges-large.json
+!grid-web/public/grids/RottenOranges-rect.json

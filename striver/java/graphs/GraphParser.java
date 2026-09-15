@@ -85,4 +85,32 @@ public class GraphParser {
 
         return isConnected;
     }
+
+    public static int[][] parseGrid(String input) {
+
+    // Remove whitespace
+    input = input.replaceAll("\\s", "");
+
+    // Remove the outer [[ and ]]
+    input = input.substring(2, input.length() - 2);
+
+    // Split individual rows
+    String[] rows = input.split("\\],\\[");
+
+    int m = rows.length;
+    int n = rows[0].split(",").length;
+
+    int[][] grid = new int[m][n];
+
+    for (int i = 0; i < m; i++) {
+
+        String[] values = rows[i].split(",");
+
+        for (int j = 0; j < n; j++) {
+            grid[i][j] = Integer.parseInt(values[j]);
+        }
+    }
+
+    return grid;
+}
 }

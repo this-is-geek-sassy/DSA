@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "program": "RottenOranges",
+    "kind": "grid-bfs",
+    "rows": 3,
+    "cols": 3,
+    "legend": {"0": "empty", "1": "fresh", "2": "rotten"},
+    "result": 1,
+    "createdAt": "2026-09-15T10:45:21.996213019Z",
+    "events": 23,
+    "maxEvents": 200000,
+    "truncated": false
+  },
+  "initialGrid": [
+    [2, 1, 1],
+    [1, 1, 1],
+    [0, 1, 2]
+  ],
+  "events": [
+    {"t":"start","s":0,"frontier":[[0,0],[2,2]],"vars":{"noOfRottensAtBegin":2,"rqSize":2,"cqSize":2,"moveCount":0,"nodeLeftInLayer":2,"nodesInNextLayer":0}},
+    {"t":"pop","s":1,"r":0,"c":0,"minute":0,"vars":{"noOfRottensAtBegin":2,"rqSize":1,"cqSize":1,"moveCount":0,"nodeLeftInLayer":2,"nodesInNextLayer":0,"noFreshOranges":6,"r":0,"c":0}},
+    {"t":"skip","s":2,"r":-1,"c":0,"from":[0,0],"why":"oob","minute":0,"vars":{"noOfRottensAtBegin":2,"rqSize":1,"cqSize":1,"moveCount":0,"nodeLeftInLayer":2,"nodesInNextLayer":0,"noFreshOranges":6,"r":0,"c":0}},
+    {"t":"infect","s":3,"r":1,"c":0,"from":[0,0],"minute":0,"vars":{"noOfRottensAtBegin":2,"rqSize":2,"cqSize":2,"moveCount":0,"nodeLeftInLayer":2,"nodesInNextLayer":1,"noFreshOranges":5,"r":0,"c":0}},
+    {"t":"skip","s":4,"r":0,"c":-1,"from":[0,0],"why":"oob","minute":0,"vars":{"noOfRottensAtBegin":2,"rqSize":2,"cqSize":2,"moveCount":0,"nodeLeftInLayer":2,"nodesInNextLayer":1,"noFreshOranges":5,"r":0,"c":0}},
+    {"t":"infect","s":5,"r":0,"c":1,"from":[0,0],"minute":0,"vars":{"noOfRottensAtBegin":2,"rqSize":3,"cqSize":3,"moveCount":0,"nodeLeftInLayer":2,"nodesInNextLayer":2,"noFreshOranges":4,"r":0,"c":0}},
+    {"t":"pop","s":6,"r":2,"c":2,"minute":0,"vars":{"noOfRottensAtBegin":2,"rqSize":2,"cqSize":2,"moveCount":0,"nodeLeftInLayer":1,"nodesInNextLayer":2,"noFreshOranges":4,"r":2,"c":2}},
+    {"t":"infect","s":7,"r":1,"c":2,"from":[2,2],"minute":0,"vars":{"noOfRottensAtBegin":2,"rqSize":3,"cqSize":3,"moveCount":0,"nodeLeftInLayer":1,"nodesInNextLayer":3,"noFreshOranges":3,"r":2,"c":2}},
+    {"t":"skip","s":8,"r":3,"c":2,"from":[2,2],"why":"oob","minute":0,"vars":{"noOfRottensAtBegin":2,"rqSize":3,"cqSize":3,"moveCount":0,"nodeLeftInLayer":1,"nodesInNextLayer":3,"noFreshOranges":3,"r":2,"c":2}},
+    {"t":"infect","s":9,"r":2,"c":1,"from":[2,2],"minute":0,"vars":{"noOfRottensAtBegin":2,"rqSize":4,"cqSize":4,"moveCount":0,"nodeLeftInLayer":1,"nodesInNextLayer":4,"noFreshOranges":2,"r":2,"c":2}},
+    {"t":"skip","s":10,"r":2,"c":3,"from":[2,2],"why":"oob","minute":0,"vars":{"noOfRottensAtBegin":2,"rqSize":4,"cqSize":4,"moveCount":0,"nodeLeftInLayer":1,"nodesInNextLayer":4,"noFreshOranges":2,"r":2,"c":2}},
+    {"t":"tick","s":11,"minute":1,"rotted":[[1,0],[0,1],[1,2],[2,1]],"vars":{"noOfRottensAtBegin":2,"rqSize":4,"cqSize":4,"moveCount":1,"nodeLeftInLayer":4,"nodesInNextLayer":0,"noFreshOranges":2,"r":2,"c":2}},
+    {"t":"pop","s":12,"r":1,"c":0,"minute":1,"vars":{"noOfRottensAtBegin":2,"rqSize":3,"cqSize":3,"moveCount":1,"nodeLeftInLayer":4,"nodesInNextLayer":0,"noFreshOranges":2,"r":1,"c":0}},
+    {"t":"skip","s":13,"r":0,"c":0,"from":[1,0],"why":"visited","minute":1,"vars":{"noOfRottensAtBegin":2,"rqSize":3,"cqSize":3,"moveCount":1,"nodeLeftInLayer":4,"nodesInNextLayer":0,"noFreshOranges":2,"r":1,"c":0}},
+    {"t":"skip","s":14,"r":2,"c":0,"from":[1,0],"why":"empty","minute":1,"vars":{"noOfRottensAtBegin":2,"rqSize":3,"cqSize":3,"moveCount":1,"nodeLeftInLayer":4,"nodesInNextLayer":0,"noFreshOranges":2,"r":1,"c":0}},
+    {"t":"skip","s":15,"r":1,"c":-1,"from":[1,0],"why":"oob","minute":1,"vars":{"noOfRottensAtBegin":2,"rqSize":3,"cqSize":3,"moveCount":1,"nodeLeftInLayer":4,"nodesInNextLayer":0,"noFreshOranges":2,"r":1,"c":0}},
+    {"t":"infect","s":16,"r":1,"c":1,"from":[1,0],"minute":1,"vars":{"noOfRottensAtBegin":2,"rqSize":4,"cqSize":4,"moveCount":1,"nodeLeftInLayer":4,"nodesInNextLayer":1,"noFreshOranges":1,"r":1,"c":0}},
+    {"t":"pop","s":17,"r":0,"c":1,"minute":1,"vars":{"noOfRottensAtBegin":2,"rqSize":3,"cqSize":3,"moveCount":1,"nodeLeftInLayer":3,"nodesInNextLayer":1,"noFreshOranges":1,"r":0,"c":1}},
+    {"t":"skip","s":18,"r":-1,"c":1,"from":[0,1],"why":"oob","minute":1,"vars":{"noOfRottensAtBegin":2,"rqSize":3,"cqSize":3,"moveCount":1,"nodeLeftInLayer":3,"nodesInNextLayer":1,"noFreshOranges":1,"r":0,"c":1}},
+    {"t":"skip","s":19,"r":1,"c":1,"from":[0,1],"why":"visited","minute":1,"vars":{"noOfRottensAtBegin":2,"rqSize":3,"cqSize":3,"moveCount":1,"nodeLeftInLayer":3,"nodesInNextLayer":1,"noFreshOranges":1,"r":0,"c":1}},
+    {"t":"skip","s":20,"r":0,"c":0,"from":[0,1],"why":"visited","minute":1,"vars":{"noOfRottensAtBegin":2,"rqSize":3,"cqSize":3,"moveCount":1,"nodeLeftInLayer":3,"nodesInNextLayer":1,"noFreshOranges":1,"r":0,"c":1}},
+    {"t":"infect","s":21,"r":0,"c":2,"from":[0,1],"minute":1,"vars":{"noOfRottensAtBegin":2,"rqSize":4,"cqSize":4,"moveCount":1,"nodeLeftInLayer":3,"nodesInNextLayer":2,"noFreshOranges":0,"r":0,"c":1}},
+    {"t":"done","s":22,"result":1,"vars":{"noOfRottensAtBegin":2,"rqSize":4,"cqSize":4,"moveCount":1,"nodeLeftInLayer":2,"nodesInNextLayer":2,"noFreshOranges":0,"r":0,"c":1}}
+  ]
+}
