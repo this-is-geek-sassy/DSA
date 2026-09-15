@@ -8,12 +8,14 @@ import java.util.ArrayList;
  * Pick a method by the shape of the problem input, not by the algorithm:
  * - {@link #parseUndirectedGraph}: flat edge pairs → undirected adjacency list (needs V)
  * - {@link #parseEdgeList}: same flat edge pairs → list of [u, v] edges (no V)
+ * - {@link #parseEdgeMatrix}: nested [[u,v],...] pairs → int[][] (LeetCode prerequisites)
  * - {@link #parseAdjMatrix}: nested [[...],[...]] square matrix → int[][]
  * - {@link #parseGrid}: nested [[...],[...]] rectangular grid → int[][]
  *
  * {@code parseAdjMatrix} and {@code parseGrid} accept the same nested-array string form;
  * use the matrix method when the structure is a graph (square, vertex↔vertex), and the grid
- * method when it is a board / image (rows×cols cells).
+ * method when it is a board / image (rows×cols cells). Use {@link #parseEdgeMatrix} when the
+ * nested array is a list of fixed-width pairs (e.g. Course Schedule prerequisites).
  */
 public class GraphParser {
 
@@ -97,6 +99,45 @@ public class GraphParser {
             edge.add(Integer.parseInt(values[i + 1]));
 
             edges.add(edge);
+        }
+
+        return edges;
+    }
+
+    /**
+     * Parses a nested edge-pair string into an {@code int[][]} (LeetCode-style prerequisites).
+     *
+     * Use when the problem gives pairs as {@code "[[1,0],[0,1]]"} and you need
+     * {@code int[][] prerequisites} (each row {@code [a, b]}). Handles empty {@code "[]"}.
+     *
+     * Differs from {@link #parseEdgeList}: returns a primitive {@code int[][]} instead of
+     * {@code ArrayList}. Differs from {@link #parseAdjMatrix}/{@link #parseGrid}: meant for
+     * a list of edges/pairs, not a square connectivity matrix or a board.
+     *
+     * @param input nested array string {@code [[a,b],[c,d],...]} with whitespace allowed
+     * @return {@code m×k} matrix of pairs (typically {@code m×2}); empty input → {@code new int[0][]}
+     */
+    public static int[][] parseEdgeMatrix(String input) {
+
+        input = input.replaceAll("\\s", "");
+
+        if (input.isEmpty() || input.equals("[]")) {
+            return new int[0][];
+        }
+
+        // Remove outer [[ and ]]
+        input = input.substring(2, input.length() - 2);
+
+        String[] rows = input.split("\\],\\[");
+        int m = rows.length;
+        int k = rows[0].split(",").length;
+        int[][] edges = new int[m][k];
+
+        for (int i = 0; i < m; i++) {
+            String[] values = rows[i].split(",");
+            for (int j = 0; j < k; j++) {
+                edges[i][j] = Integer.parseInt(values[j]);
+            }
         }
 
         return edges;
