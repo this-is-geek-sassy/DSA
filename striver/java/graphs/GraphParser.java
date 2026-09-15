@@ -2,7 +2,36 @@ package graphs;
 
 import java.util.ArrayList;
 
+/**
+ * Parsers for common LeetCode / Striver graph input strings.
+ *
+ * Pick a method by the shape of the problem input, not by the algorithm:
+ * - {@link #parseUndirectedGraph}: flat edge pairs → undirected adjacency list (needs V)
+ * - {@link #parseEdgeList}: same flat edge pairs → list of [u, v] edges (no V)
+ * - {@link #parseAdjMatrix}: nested [[...],[...]] square matrix → int[][]
+ * - {@link #parseGrid}: nested [[...],[...]] rectangular grid → int[][]
+ *
+ * {@code parseAdjMatrix} and {@code parseGrid} accept the same nested-array string form;
+ * use the matrix method when the structure is a graph (square, vertex↔vertex), and the grid
+ * method when it is a board / image (rows×cols cells).
+ */
 public class GraphParser {
+
+    /**
+     * Builds an undirected adjacency list from a flat edge-pair string.
+     *
+     * Use when you need an adjacency-list of neighbors for BFS/DFS/cycle detection and the
+     * input is edges like {@code "[[0,1],[0,2],[1,3]]"} (or the flattened
+     * {@code "0,1,0,2,1,3"} after bracket stripping).
+     *
+     * Not for directed graphs (adds both u→v and v→u), adjacency matrices, or cell grids —
+     * use {@link #parseEdgeList}, {@link #parseAdjMatrix}, or {@link #parseGrid} instead.
+     *
+     * @param input edge pairs as a bracketed or comma-separated string of integers in
+     *              u,v,u,v,... order
+     * @param V     number of vertices; creates indices 0 .. V-1
+     * @return adjacency list of size V; each edge appears in both directions
+     */
     public static ArrayList<ArrayList<Integer>> parseUndirectedGraph(
             String input, int V) {
 
@@ -33,6 +62,19 @@ public class GraphParser {
         return graph;
     }
 
+    /**
+     * Parses a flat edge-pair string into a list of individual edges (no adjacency list).
+     *
+     * Use when the algorithm wants a raw edge list (e.g. Kruskal, Union-Find on edges, or
+     * you will build the graph yourself) and the input looks like {@code "[[0,1],[2,1],[3,4]]"}.
+     *
+     * Differs from {@link #parseUndirectedGraph}: does not need V, does not expand into
+     * neighbor lists, and does not add reverse edges — each pair becomes one [u, v] entry only.
+     *
+     * @param input edge pairs as a bracketed or comma-separated string of integers in
+     *              u,v,u,v,... order; empty after stripping yields an empty list
+     * @return list of 2-element lists [u, v] in input order
+     */
     public static ArrayList<ArrayList<Integer>> parseEdgeList(String input) {
 
         ArrayList<ArrayList<Integer>> edges = new ArrayList<>();
@@ -60,6 +102,20 @@ public class GraphParser {
         return edges;
     }
 
+    /**
+     * Parses a nested square matrix string into an n×n adjacency matrix.
+     *
+     * Use when the problem gives a connectivity / adjacency matrix such as
+     * {@code "[[1,1,0],[1,1,0],[0,0,1]]"} (e.g. number of provinces / connected components
+     * on an isConnected matrix).
+     *
+     * Differs from {@link #parseGrid}: assumes a square n×n graph matrix (vertex i to
+     * vertex j). Prefer {@link #parseGrid} for rectangular boards where rows and columns
+     * are spatial cells, not vertices.
+     *
+     * @param input nested array string [[row0],[row1],...] with whitespace allowed
+     * @return n×n int[][] where result[i][j] is the parsed entry
+     */
     public static int[][] parseAdjMatrix(String input) {
 
         // Remove whitespace
@@ -86,6 +142,19 @@ public class GraphParser {
         return isConnected;
     }
 
+    /**
+     * Parses a nested rectangular grid string into an m×n cell matrix.
+     *
+     * Use when the problem is on a board / image / map (flood fill, rotten oranges, island
+     * counting) and the input looks like {@code "[[0,0,0],[0,1,0]]"} — rows of cell values,
+     * not graph edges.
+     *
+     * Differs from {@link #parseAdjMatrix}: allows m ≠ n; treat indices as (row, col) cells.
+     * Do not use this for vertex adjacency matrices.
+     *
+     * @param input nested array string [[row0],[row1],...] with whitespace allowed
+     * @return m×n int[][] grid; m = number of rows, n = cols
+     */
     public static int[][] parseGrid(String input) {
 
     // Remove whitespace
