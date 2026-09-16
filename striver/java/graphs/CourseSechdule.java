@@ -72,6 +72,44 @@ public class CourseSechdule {
         return false;
     }
 
+    private static boolean bfsCycleDetection (int v, ArrayList<ArrayList<Integer>> graph) {
+
+        int processed = 0;
+
+        // calculate indegree of all vertices 
+        int[] indegree_v = new int[v];
+
+        for (ArrayList<Integer> oneNode: graph) {
+            for (Integer e: oneNode) {
+                indegree_v[e]++;
+            }
+        }
+
+        Deque<Integer> q = new ArrayDeque<>();
+        for (int i=0; i<v; i++) {
+            if (indegree_v[i] == 0)
+                q.offerLast(i);
+        }
+
+        while (!q.isEmpty()) {
+            int current = q.pollFirst();
+            processed++;
+
+            ArrayList<Integer> neighbours = graph.get(current);
+            for (Integer neighbour: neighbours) {
+                indegree_v[neighbour]--;
+
+                if (indegree_v[neighbour] == 0) {
+                    q.offerLast(neighbour);
+                }
+            }
+        }
+        if (processed == v) {
+            return true;
+        }
+        return false;
+    }
+
     public static boolean bfs (int v, ArrayList<ArrayList<Integer>> graph) {
 
         // Failed attampt
@@ -122,7 +160,7 @@ public class CourseSechdule {
             adjList.get(v).add(u);
         }
         // System.out.println(adjList);
-        return dfs(numCourses, adjList);
+        return bfsCycleDetection(numCourses, adjList);
         // return false;
     }
     public static void main(String[] args) {
