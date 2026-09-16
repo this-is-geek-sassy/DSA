@@ -7,13 +7,13 @@ import java.util.Scanner;
 
 public class BFS {
 
-    public static int[] bfs (int v, ArrayList<ArrayList<Integer>> graph) {
+    public static int[] bfs (int v, ArrayList<ArrayList<Integer>> graph, int sourceVertex) {
 
         int[] visited = new int[v];
         int[] prev = new int[v];
         Deque<Integer> q = new ArrayDeque<>();
-        q.offerLast(0);
-        visited[0] = 1;
+        q.offerLast(sourceVertex);
+        visited[sourceVertex] = 1;
 
         System.out.println("visiting node = 0");
 
@@ -40,7 +40,7 @@ public class BFS {
 
         String input = sc.nextLine();
         ArrayList<ArrayList<Integer>> graph = GraphParser.parseUndirectedGraph(input, v);
-        int[] prevList = bfs(v, graph);
+        int[] prevList = bfs(v, graph, 0);
 
         for (int i=0; i<prevList.length; i++) {
             System.out.println("prev of " + i + " is = " + prevList[i]);
