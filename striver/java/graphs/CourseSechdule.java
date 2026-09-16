@@ -10,6 +10,68 @@ import java.util.Scanner;
 
 public class CourseSechdule {
 
+    private static final int UNVISITED = 0;
+    private static final int ACTIVE = 1;
+    private static final int SAFE = 2;
+
+    static class Frame {
+        int node;
+        int nextNeighbour;
+
+        public Frame(int node) {
+            this.node = node;
+            this.nextNeighbour = 0;
+        }
+    }
+
+    private static boolean dfs (int v, ArrayList<ArrayList<Integer>> graph) {
+
+        int[] state = new int[v];
+
+        for (int start = 0; start < v; start++) {
+            if (state[start] == SAFE) continue;
+
+            if (hasCycle(start, graph, state)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean hasCycle (int start, ArrayList<ArrayList<Integer>> graph, int[] state) {
+
+        Deque<Frame> stack = new ArrayDeque<>();
+        state[start] = ACTIVE;
+
+        stack.push(new Frame(start));
+
+        while (!stack.isEmpty()) {
+
+            Frame current = stack.peek();
+
+            int node = current.node;
+
+            if (current.nextNeighbour == graph.get(node).size()) {
+                state[node] = SAFE;
+                stack.pop();
+                continue;
+            }
+
+            int neighbour = graph.get(node).get(current.nextNeighbour);
+            current.nextNeighbour++;
+
+            if (state[neighbour] == UNVISITED) {
+                state[neighbour] = ACTIVE;
+                stack.push(new Frame(neighbour));
+            }
+            else if (state[neighbour] == ACTIVE) {
+                // back edge found
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean bfs (int v, ArrayList<ArrayList<Integer>> graph) {
 
         // Failed attampt
@@ -60,7 +122,7 @@ public class CourseSechdule {
             adjList.get(v).add(u);
         }
         // System.out.println(adjList);
-        return bfs(numCourses, adjList);
+        return dfs(numCourses, adjList);
         // return false;
     }
     public static void main(String[] args) {
