@@ -198,29 +198,55 @@ public class GraphParser {
      */
     public static int[][] parseGrid(String input) {
 
-    // Remove whitespace
-    input = input.replaceAll("\\s", "");
+        // Remove whitespace
+        input = input.replaceAll("\\s", "");
 
-    // Remove the outer [[ and ]]
-    input = input.substring(2, input.length() - 2);
+        // Remove the outer [[ and ]]
+        input = input.substring(2, input.length() - 2);
 
-    // Split individual rows
-    String[] rows = input.split("\\],\\[");
+        // Split individual rows
+        String[] rows = input.split("\\],\\[");
 
-    int m = rows.length;
-    int n = rows[0].split(",").length;
+        int m = rows.length;
+        int n = rows[0].split(",").length;
 
-    int[][] grid = new int[m][n];
+        int[][] grid = new int[m][n];
 
-    for (int i = 0; i < m; i++) {
+        for (int i = 0; i < m; i++) {
 
-        String[] values = rows[i].split(",");
+            String[] values = rows[i].split(",");
 
-        for (int j = 0; j < n; j++) {
-            grid[i][j] = Integer.parseInt(values[j]);
+            for (int j = 0; j < n; j++) {
+                grid[i][j] = Integer.parseInt(values[j]);
+            }
         }
+
+        return grid;
     }
 
-    return grid;
-}
+    public static char[][] parseBoard(String input) {
+
+        input = input.replaceAll("\\s+", "");
+    
+        ArrayList<char[]> rows = new ArrayList<>();
+    
+        String[] rowStrings = input.substring(2, input.length() - 2)
+                                    .split("\\],\\[");
+    
+        for (String row : rowStrings) {
+            row = row.replace("\"", "");
+    
+            String[] cells = row.split(",");
+    
+            char[] r = new char[cells.length];
+    
+            for (int i = 0; i < cells.length; i++) {
+                r[i] = cells[i].charAt(0);
+            }
+    
+            rows.add(r);
+        }
+    
+        return rows.toArray(new char[0][]);
+    }
 }
