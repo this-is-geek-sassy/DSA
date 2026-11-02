@@ -10,90 +10,74 @@ import java.util.Scanner;
 public class PathWithMinEffort {
 
     static class Pair {
-        int distance;
-        int node;
+        int row, col, effort;
 
-        public Pair (int node, int distance) {
-            this.distance = distance;
-            this.node = node;
+        public Pair(int row, int col, int effort) {
+            this.row = row;
+            this.col = col;
+            this.effort = effort;
         }
     }
 
-    public static int minimumEffortPath(int[][] grid) {
-        
-        if (grid.length == 1 && grid[0].length == 1)
-            return 0;
-            
-        int n = grid.length, m = grid[0].length;
-        PriorityQueue<Pair> rq = new PriorityQueue<>((a, b) -> Integer.compare(a.distance, b.distance));
-        PriorityQueue<Pair> cq = new PriorityQueue<>((a, b) -> Integer.compare(a.distance, b.distance));
+    public static int minimumEffortPath(int[][] heights) {
 
-        boolean reachedEnd = false;
-        boolean[][] visited = new boolean[n][m];
-        int[][] minDistEncounteredTillNow = new int[n][m];
+        int n = heights.length;
+        int m = heights[0].length;
 
-        for (int[] d: minDistEncounteredTillNow) {
-            Arrays.fill(d, Integer.MAX_VALUE);
-        }
-        minDistEncounteredTillNow[0][0] = 0;
+        int[][] dist = new int[n][m];
 
-        int[] prev = new int[n*m];
-        // node with row i and col j will be stored in (i*m + j)th cell
-        Arrays.fill(prev, Integer.MIN_VALUE);
+        for (int[] row : dist)
+            Arrays.fill(row, Integer.MAX_VALUE);
 
-        // upto 4 potential neighbours
+        PriorityQueue<Pair> pq = new PriorityQueue<>(
+            (a, b) -> Integer.compare(a.effort, b.effort)
+        );
+
         int[] dr = {-1, 1, 0, 0};
         int[] dc = {0, 0, -1, 1};
 
-        rq.offer(new Pair(0, 0));
-        cq.offer(new Pair(0, 0));
+        dist[0][0] = 0;
+        pq.offer(new Pair(0, 0, 0));
 
-        // visited[0][0] = true;
+        while (!pq.isEmpty()) {
 
-        while (!rq.isEmpty()) {
-            int r = rq.poll().node;
-            int c = cq.poll().node;
+            Pair curr = pq.poll();
 
-            if (r == n-1 && c == m-1) {
-                reachedEnd = true;
-                break;
-            }
-            if (visited[r][c]) continue;
-            visited[r][c] = true;
-            // explore neighbours
-            for (int i=0; i<4; i++) {
-                int rr = r + dr[i];
-                int cc = c + dc[i];
+            int r = curr.row;
+            int c = curr.col;
+            int effort = curr.effort;
 
-                if (rr<0 || cc<0) continue;
-                if (rr>=n || cc>=m) continue;
+            // Ignore outdated entries
+            if (effort > dist[r][c])
+                continue;
 
-                if (visited[rr][cc]) continue;
-                if (Math.abs(grid[r][c] - grid[rr][cc]) < minDistEncounteredTillNow[rr][cc]) {
-                    minDistEncounteredTillNow[rr][cc] = Math.abs(grid[r][c] - grid[rr][cc]);
-                    prev[rr*m + cc] = r*m + c;
-                    rq.add(new Pair(rr, Math.abs(grid[r][c] - grid[rr][cc])));
-                    cq.add(new Pair(cc, Math.abs(grid[r][c] - grid[rr][cc])));
+            // Destination reached optimally
+            if (r == n - 1 && c == m - 1)
+                return effort;
+
+            // Explore neighbours
+            for (int i = 0; i < 4; i++) {
+
+                int nr = r + dr[i];
+                int nc = c + dc[i];
+
+                if (nr < 0 || nc < 0 || nr >= n || nc >= m)
+                    continue;
+
+                int edgeWeight = Math.abs(
+                    heights[r][c] - heights[nr][nc]
+                );
+
+                int newEffort = Math.max(effort, edgeWeight);
+
+                if (newEffort < dist[nr][nc]) {
+                    dist[nr][nc] = newEffort;
+                    pq.offer(new Pair(nr, nc, newEffort));
                 }
             }
         }
-        // path reconstruction and max weight check
-        int maxDistInThePath = Integer.MIN_VALUE;
-        int _prev = prev[prev.length-1], _curr = prev.length-1;
-        while (_prev != Integer.MIN_VALUE) {
-            int prev_i = _prev/m;
-            int prev_j = _prev%m;
 
-            int curr_i = _curr/m;
-            int curr_j = _curr%m;
-
-            int curr_wt = Math.abs(grid[prev_i][prev_j] - grid[curr_i][curr_j]);
-            if (curr_wt > maxDistInThePath)
-                maxDistInThePath = curr_wt;
-            _curr = _prev;
-            _prev = prev[_prev];
-        }
-        return maxDistInThePath;
+        return 0;
     }
 
     private static int[][] gridParser (String gridInput) {
