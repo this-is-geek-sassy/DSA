@@ -31,6 +31,9 @@ public class DisjointSet {
     public boolean connected (int u, int v) {
         return findRoot(u) == findRoot(v);
     }
+    public int size(int p) {
+        return sz[findRoot(p)];
+    }
     public void unionByRank(int u, int v) {
         int root1 = findRoot(u);
         int root2 = findRoot(v);
