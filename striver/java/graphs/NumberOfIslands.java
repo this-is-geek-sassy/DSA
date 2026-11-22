@@ -8,11 +8,11 @@ import java.util.Scanner;
 
 public class NumberOfIslands {
 
-    private static void gridDFS (char[][] grid, int i, int j, int[][] visited) {
+    private static void gridDFS (int[][] grid, int i, int j, int[][] visited) {
         if (i<0 || j<0 || i>=grid.length || j>=grid[0].length) {
             return;
         }
-        if (grid[i][j] == '0' || visited[i][j] == 1)
+        if (grid[i][j] == 0 || visited[i][j] == 1)
             return;
 
         visited[i][j] = 1;
@@ -22,14 +22,14 @@ public class NumberOfIslands {
         gridDFS(grid, i, j+1, visited);
     }
 
-    public static int numIslands(char[][] grid) {
+    public static int numIslands(int[][] grid) {
         
         int count = 0;
         int[][] visited = new int[grid.length][grid[0].length];
 
         for (int i=0; i<grid.length; i++) {
             for (int j=0; j<grid[0].length; j++) {
-                if (grid[i][j] == '1' && visited[i][j] == 0) {
+                if (grid[i][j] == 1 && visited[i][j] == 0) {
                     count++;
                     gridDFS(grid, i, j, visited);
                 }
@@ -77,7 +77,7 @@ public class NumberOfIslands {
                 gridArr[i][j] = grid.get(i).get(j);
             }
         }
-        int ans = numIslands(gridArr);
-        System.out.println(ans);
+        // int ans = numIslands(gridArr);
+        // System.out.println(ans);
     }
 }
