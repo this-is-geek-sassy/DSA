@@ -16,7 +16,7 @@ public class DisjointSet {
         Arrays.setAll(id, i -> i);
         // Arrays.parallelSetAll(id, i -> i);
     }
-    private int findRoot (int p) {
+    public int findRoot (int p) {
         int root = p;
         while (root != id[root]) 
             root = id[root];
